@@ -1,6 +1,21 @@
 apply plugin: 'java'
 apply plugin: 'jacoco'
 apply plugin: 'application'
+apply plugin: 'checkstyle'
+
+mainClassName = 'tiralab.pathfinding.Main'
+
+checkstyle {
+    toolVersion '8.17';
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    testImplementation     'junit:junit:4.13'
+}
 
 jacocoTestReport {
     reports {
@@ -10,14 +25,3 @@ jacocoTestReport {
 }
 
 check.dependsOn jacocoTestReport
-
-
-mainClassName = 'tiralab.pathfinding.Main'
-
-repositories {
-    jcenter()
-}
-
-dependencies {
-    testImplementation     'junit:junit:4.13'
-}
