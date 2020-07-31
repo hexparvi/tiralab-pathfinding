@@ -21,13 +21,6 @@ public class Node implements Comparable<Node> {
         this.name = name;
     }
     
-    public Node(String name, int xCoord, int yCoord) {
-        this.name = name;
-        this.x = xCoord;
-        this.y = yCoord;
-    }
-    
-    //what is overloading lmao
     public Node(String name, int xCoord, int yCoord, boolean isObstacle) {
         this.name = name;
         this.x = xCoord;
@@ -43,8 +36,6 @@ public class Node implements Comparable<Node> {
         return shortestDistance;
     }
 
-    //disallowing setting shortestDistance to a value larger than previously here
-    //would make reusing nodes impossible -> does it matter
     public void setShortestDistance(double shortestDistance) {
         if (shortestDistance < 0) {
             throw new IllegalArgumentException("Distance between nodes should not be negative");
@@ -122,7 +113,6 @@ public class Node implements Comparable<Node> {
         return false;
     }
 
-    //is using just the name enough...?
     @Override
     public int hashCode() {
         int hash = 5;

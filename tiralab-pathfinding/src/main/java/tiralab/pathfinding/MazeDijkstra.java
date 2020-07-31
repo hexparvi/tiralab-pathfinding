@@ -9,7 +9,6 @@ import tiralab.pathfinding.domain.Maze;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Set;
 import tiralab.pathfinding.domain.Node;
@@ -22,14 +21,20 @@ public class MazeDijkstra {
     private PriorityQueue<Node> unvisitedNodes = new PriorityQueue<>();
     private Set<String> visitedNodes = new HashSet<>();
     
+    //TODO: deal with unreachable nodes
+    
+    /**
+     * Finds the path between two Nodes of a Maze using Dijkstra's algorithm.
+     * @param source starting Node
+     * @param maze Maze containing the starting and target Nodes
+     * @param target target Node
+     */
     public void run(Node source, Maze maze, Node target) {
         source.setShortestDistance(0);
         unvisitedNodes.add(source);
         
-        while (unvisitedNodes.size() != 0) {
+        while (unvisitedNodes.isEmpty()) {
             Node currentNode = unvisitedNodes.remove();
-            
-            //System.out.println("Looking at pixel: " + currentNode.getX() + ", " + currentNode.getY());
             
             if (visitedNodes.contains(currentNode.getName())) {
                 continue;
@@ -49,6 +54,12 @@ public class MazeDijkstra {
     //TODO: check that nodes are actually found in graph?
     //TODO: check that run has been called before calling this method?
     
+    /**
+     * Finds the shortest route between two Nodes
+     * @param start starting Node
+     * @param end target Node
+     * @return shortest route between two Nodes
+     */
     public ArrayList<Node> getShortestRoute(Node start, Node end) {
         ArrayList<Node> shortestRoute = new ArrayList<>();
         
@@ -87,13 +98,5 @@ public class MazeDijkstra {
     private double distanceToNode(Node node) {
         if (node.isObstacle()) return Double.MAX_VALUE;
         else return 0.1;
-    }
-    
-    //is this necessary
-    private void compareShortestDistances(Node node, Node parent, int currentDistance) {
-        if (currentDistance < node.getShortestDistance()) {
-            node.setShortestDistance(parent.getShortestDistance() + currentDistance);
-            node.setPreviousNode(parent);
-        }
     }
 }

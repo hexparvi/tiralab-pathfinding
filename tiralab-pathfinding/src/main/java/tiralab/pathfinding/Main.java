@@ -17,7 +17,7 @@ public class Main {
      */
     public static void main(String[] args) {
         
-        int[][] pixelArray = MyIO.readFromFile("src/mazes/maze1.png");
+        int[][] pixelArray = MyIO.readFromFile("src/testmazes/minimaze.png");
 
         //Maze maze = new Maze("src/mazes/maze1.png");
         Maze maze = new Maze(pixelArray, pixelArray.length, pixelArray[0].length);
@@ -28,8 +28,11 @@ public class Main {
 //        Node end = maze.getNodeAtPosition(9, 8);
 
         //start/end nodes for maze1
-        Node start = maze.getNodeAtPosition(484, 48);
-        Node end = maze.getNodeAtPosition(19, 1001);
+//        Node start = maze.getNodeAtPosition(484, 48);
+//        Node end = maze.getNodeAtPosition(19, 1001);
+
+        Node start = maze.getNodeAtPosition(1,1);
+        Node end = maze.getNodeAtPosition(4, 9);
         
         System.out.println("are nodes obstacles start/end: " + start.isObstacle() + "/" + end.isObstacle());
         

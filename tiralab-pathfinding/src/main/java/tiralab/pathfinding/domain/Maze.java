@@ -5,10 +5,8 @@
  */
 package tiralab.pathfinding.domain;
 
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
-import tiralab.pathfinding.domain.Node;
 
 /**
  *
@@ -18,14 +16,7 @@ public class Maze {
     private Node[][] nodeArray;
     private int width;
     private int height;
-    private BufferedImage image;
     private int[][] pixels;
-    
-    public Maze(BufferedImage img) {
-        this.image = img;
-        this.width = img.getWidth();
-        this.height = img.getHeight();
-    }
     
     public Maze(int[][] pixelArray, int width, int height) {
         this.pixels = pixelArray;
@@ -33,19 +24,28 @@ public class Maze {
         this.height = height;
     }
     
+    /**
+     * Generates an array of Nodes based on the pixelArray supplied on construction.
+     */
     public void generateNodes() {
         Node[][] nodes = new Node[width][height];
         
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 nodes[x][y] = new Node("(" + (String.valueOf(x) + ", " + String.valueOf(y)) + ")",
-                        x, y, isPointAnObstacle2(x, y, this.pixels[x][y]));
+                        x, y, isPointAnObstacle(x, y, this.pixels[x][y]));
             }
         }
         
         this.nodeArray = nodes;
     }
     
+    /**
+     * Finds the node at position (x,y) in the Maze.
+     * @param x x-coordinate
+     * @param y y-coordinate
+     * @return Node found at position (x,y)
+     */
     public Node getNodeAtPosition(int x, int y) {
         if (!pointIsWithinMazeBounds(x, y)) {
             throw new IllegalArgumentException("Given position is outside of maze boundaries");
@@ -54,7 +54,11 @@ public class Maze {
         return nodeArray[x][y];
     }
     
-    //have neighbors saved on nodes instead?
+    /**
+     * Finds neighbors of a Node.
+     * @param node
+     * @return List of Nodes accessible from the supplied Node
+     */
     public List<Node> findNeighborsOfNode(Node node) {
         List<Node> neighbors = new ArrayList<>();
         
@@ -70,34 +74,19 @@ public class Maze {
     }
     
     public void getRandomAccessibleNode() {
-        
+        //TODO
     }
     
     private boolean pointIsWithinMazeBounds(int x, int y) {
         return ((x >= 0 && x < width) && (y >= 0 && y < height));
     }
     
-    private boolean isPointAnObstacle(int x, int y, BufferedImage img) {
-        int color = img.getRGB(x, y);
-        int blue = color & 0xff;
-        int green = (color & 0xff00) >> 8;
-        int red = (color & 0xff0000) >> 16;
-        
-        double darkness = 1 - ((0.299 * red) + (0.587 * green) + (0.114 * blue)) / 255;
-//        System.out.println("Pixel position: " + x + ", " + y);
-//        System.out.println("Luminosity of pixel: " + luminosity);
-        
-        return (darkness > 0.5);
-    }
-    
-    private boolean isPointAnObstacle2(int x, int y, int RGBvalue) {
+    private boolean isPointAnObstacle(int x, int y, int RGBvalue) {
         int blue = RGBvalue & 0xff;
         int green = (RGBvalue & 0xff00) >> 8;
         int red = (RGBvalue & 0xff0000) >> 16;
         
         double luminosity = ((0.299 * red) + (0.587 * green) + (0.114 * blue)) / 255;
-//        System.out.println("Pixel position: " + x + ", " + y);
-//        System.out.println("Luminosity of pixel: " + luminosity);
         
         return (luminosity < 0.5);
     }
@@ -125,6 +114,12 @@ public class Maze {
     public void setPixels(int[][] pixels) {
         this.pixels = pixels;
     }
-    
-    
+
+    public Node[][] getNodeArray() {
+        return nodeArray;
+    }
+
+    public void setNodeArray(Node[][] nodeArray) {
+        this.nodeArray = nodeArray;
+    }
 }

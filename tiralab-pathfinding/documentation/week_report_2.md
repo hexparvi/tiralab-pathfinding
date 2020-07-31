@@ -2,29 +2,19 @@
 
 ## What was done
 
-Dijkstra implementation using Java data structures. Writing some tests and comments. 
-Configured checkstyle, generated first test reports and Javadoc.
+Dijkstra & A* implementation using Java data structures. 
+Maze and Node classes to represent a .png image of a maze.
+Adapting Dijkstra implementation to use Maze.
+Some testing and comments. Checkstyle config.
 
 ## Time spent this week:
 
-Sunday
-* Code for Dijkstra - 1h
-* Research - 2h
+*Research - 3h
+*Implementation - 9h
+*Other - 2h
 
-Monday
-*Code for Dijkstra - 1h
-*Research - 1h
-*Debugging - 1h
-
-Tuesday
-*Coding/testing - 1h
-*checkstyle config - 0,5h
-*Javadocs, style cleanup - 0,5h
-
-Wednesday
-*Research - 0,5h
-*Astar 'sketch' - 1h
-
-**Total:** 8h
+**Total:** 14h
 
 ### Next week
+
+Implementing A* and JPS using the Maze class. Start implementing data structures?

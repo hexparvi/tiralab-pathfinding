@@ -22,37 +22,21 @@ public class TestDijkstra {
         Node nodeA = new Node("A");
         Node nodeB = new Node("B");
         Node nodeC = new Node("C");
-        //Node nodeD = new Node("D");
-        //Node nodeE = new Node("E");
         
-        Map<Node, Integer> adjacentNodes = new HashMap<>();
-        adjacentNodes.put(nodeB, 6);
-        adjacentNodes.put(nodeC, 1);
+        Map<Node, Double> adjacentNodes = new HashMap<>();
+        adjacentNodes.put(nodeB, 6.0);
+        adjacentNodes.put(nodeC, 1.0);
         nodeA.setAdjacentNodes(adjacentNodes);
         
         adjacentNodes = new HashMap<>();
-        adjacentNodes.put(nodeA, 6);
-        adjacentNodes.put(nodeC, 2);
-        //adjacentNodes.put(nodeE, 2);
-        //adjacentNodes.put(nodeC, 5);
+        adjacentNodes.put(nodeA, 6.0);
+        adjacentNodes.put(nodeC, 2.0);
         nodeB.setAdjacentNodes(adjacentNodes);
         
         adjacentNodes = new HashMap<>();
-        adjacentNodes.put(nodeB, 2);
-        adjacentNodes.put(nodeA, 1);
+        adjacentNodes.put(nodeB, 2.0);
+        adjacentNodes.put(nodeA, 1.0);
         nodeC.setAdjacentNodes(adjacentNodes);
-        
-//        adjacentNodes = new HashMap<>();
-//        adjacentNodes.put(nodeA, 1);
-//        adjacentNodes.put(nodeE, 1);
-//        adjacentNodes.put(nodeC, 2);
-//        nodeD.setAdjacentNodes(adjacentNodes);
-        
-//        adjacentNodes = new HashMap<>();
-//        adjacentNodes.put(nodeB, 2);
-//        adjacentNodes.put(nodeD, 1);
-//        adjacentNodes.put(nodeC, 5);
-//        nodeE.setAdjacentNodes(adjacentNodes);
 
         ArrayList<Node> testNodes = new ArrayList<>();
         testNodes.add(0, nodeA);
