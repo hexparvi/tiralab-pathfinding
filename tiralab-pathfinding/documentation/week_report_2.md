@@ -2,7 +2,8 @@
 
 ## What was done
 
-
+Dijkstra implementation using Java data structures. Writing some tests and comments. 
+Configured checkstyle, generated first test reports and Javadoc.
 
 ## Time spent this week:
 
@@ -16,10 +17,14 @@ Monday
 *Debugging - 1h
 
 Tuesday
-*Minor coding/testing stuff - 0,5h
+*Coding/testing - 1h
 *checkstyle config - 0,5h
-*Javadocs
+*Javadocs, style cleanup - 0,5h
 
-**Total:** 6h
+Wednesday
+*Research - 0,5h
+*Astar 'sketch' - 1h
+
+**Total:** 8h
 
 ### Next week

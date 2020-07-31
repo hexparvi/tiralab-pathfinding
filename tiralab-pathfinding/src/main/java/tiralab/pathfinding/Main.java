@@ -1,11 +1,10 @@
 package tiralab.pathfinding;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
-import javax.imageio.ImageIO;
+import tiralab.pathfinding.domain.Maze;
+import java.awt.Color;
+import java.util.List;
 import tiralab.pathfinding.domain.Node;
+import tiralab.pathfinding.io.MyIO;
 
 /**
  *
@@ -18,82 +17,34 @@ public class Main {
      */
     public static void main(String[] args) {
         
-        Dijkstra dijkstra = new Dijkstra();
-        dijkstra.run(generateTestGraph());
+        int[][] pixelArray = MyIO.readFromFile("src/mazes/maze1.png");
+
+        //Maze maze = new Maze("src/mazes/maze1.png");
+        Maze maze = new Maze(pixelArray, pixelArray.length, pixelArray[0].length);
+        maze.generateNodes();
         
-    }
-    
-    //returns start node of graph
-    public static Node generateTestGraph() {
-        System.out.println("generating test graph");
-        Node nodeA = new Node("A");
-        Node nodeB = new Node("B");
-        Node nodeC = new Node("C");
-        Node nodeD = new Node("D");
-        Node nodeE = new Node("E");
+        //start/end nodes for minimaze2
+//        Node start = maze.getNodeAtPosition(3, 3);
+//        Node end = maze.getNodeAtPosition(9, 8);
+
+        //start/end nodes for maze1
+        Node start = maze.getNodeAtPosition(484, 48);
+        Node end = maze.getNodeAtPosition(19, 1001);
         
-        Map<Node, Integer> adjacentNodes = new HashMap<>();
-        adjacentNodes.put(nodeB, 6);
-        adjacentNodes.put(nodeD, 1);
-        nodeA.setAdjacentNodes(adjacentNodes);
+        System.out.println("are nodes obstacles start/end: " + start.isObstacle() + "/" + end.isObstacle());
         
-        adjacentNodes = new HashMap<>();
-        adjacentNodes.put(nodeA, 6);
-        adjacentNodes.put(nodeD, 2);
-        adjacentNodes.put(nodeE, 2);
-        adjacentNodes.put(nodeC, 5);
-        nodeB.setAdjacentNodes(adjacentNodes);
+        MazeDijkstra dijkstra = new MazeDijkstra();
+        dijkstra.run(start, maze, end);
         
-        adjacentNodes = new HashMap<>();
-        adjacentNodes.put(nodeB, 5);
-        adjacentNodes.put(nodeE, 5);
-        nodeC.setAdjacentNodes(adjacentNodes);
         
-        adjacentNodes = new HashMap<>();
-        adjacentNodes.put(nodeA, 1);
-        adjacentNodes.put(nodeE, 1);
-        adjacentNodes.put(nodeB, 2);
-        nodeD.setAdjacentNodes(adjacentNodes);
+        List<Node> path = dijkstra.getShortestRoute(start, end);
         
-        adjacentNodes = new HashMap<>();
-        adjacentNodes.put(nodeB, 2);
-        adjacentNodes.put(nodeD, 1);
-        adjacentNodes.put(nodeC, 5);
-        nodeE.setAdjacentNodes(adjacentNodes);
-        
-        return nodeA;
-    }
-    
-    private static void readMap() {
-        BufferedImage image = null;
-        File inputFile = null;
-        
-        try {
-            inputFile = new File("src/mazes/maze1.png");
-            image = ImageIO.read(inputFile);
-            
-        } catch (Exception e) {
-            System.out.println("Error:" + e);
+        //add found path to pixelsArray
+        for (Node node : path) {
+            pixelArray[node.getX()][node.getY()] = Color.RED.getRGB();
         }
         
-        int imgWidth = image.getWidth();
-        int imgHeight = image.getHeight();
-        //int[] array;
-        //int[] pixelArray = image.getRGB(0, 0, 512, 512, array, 0, 0);
-        
-        int[][] pixels = new int[imgWidth][imgHeight];
-        
-        //iterate image pixels
-        for (int x = 0; x < imgWidth; x++) {
-            for (int y = 0; y < imgHeight; y++) {
-                pixels[x][y] = image.getRGB(x, y);
-            }
-        }
-        
-        System.out.println("Pixel iteration done");
-        
-        System.out.println("Here's an example pixel: " + pixels[5][5]);
-        
+        MyIO.writeToFile(pixelArray, "png", "paths/FoundPath.png");
     }
     
 }

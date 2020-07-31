@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package tiralab.pathfinding;
 
 import java.util.ArrayList;
@@ -8,23 +13,25 @@ import java.util.Set;
 import tiralab.pathfinding.domain.Node;
 
 /**
- * Finds shortest paths in a graph using Dijkstra's algorithm.
+ *
+ * @author hexparvi
  */
-public class Dijkstra {
-    
+public class Astar {
     private PriorityQueue<Node> unvisitedNodes = new PriorityQueue<>();
     private Set<String> visitedNodes = new HashSet<>();
     
     /**
      * Run Dijkstra's algorithm on a given graph.
-     * @param source starting node of graph
+     * @param start starting node of graph
      */
-    public void run(Node source) {
-        source.setShortestDistance(0);
-        unvisitedNodes.add(source);
+    public void run(Node start, Node end, Heuristic heuristic) {
+        start.setShortestDistance(0);
+        unvisitedNodes.add(start);
         
         while (unvisitedNodes.size() != 0) {
             Node currentNode = unvisitedNodes.remove();
+            
+            System.out.println("***Currently checking node " + currentNode.getName() + " ***");
             
             if (visitedNodes.contains(currentNode.getName())) {
                 continue;
@@ -32,7 +39,7 @@ public class Dijkstra {
             
             visitedNodes.add(currentNode.getName());
             
-            checkNeighbors(currentNode);
+            checkNeighbors(currentNode, end, heuristic);
         }
     }
     
@@ -49,14 +56,13 @@ public class Dijkstra {
     public ArrayList<Node> getShortestRoute(Node start, Node end) {
         ArrayList<Node> shortestRoute = new ArrayList<>();
         
+        shortestRoute.add(end);
         Node currentNode = end;
         
         while (!currentNode.equals(start)) {
             shortestRoute.add(currentNode.getPreviousNode());
             currentNode = currentNode.getPreviousNode();
         }
-        
-        shortestRoute.add(start);
         
         return shortestRoute;
     }
@@ -70,7 +76,7 @@ public class Dijkstra {
     
     //lowest distance neighbor should already go to top of pq, no need to return
     //refactor distance checks to their own method?
-    private void checkNeighbors(Node parent) {
+    private void checkNeighbors(Node parent, Node target, Heuristic heuristic) {
         Map<Node, Double> neighborDistances = parent.getAdjacentNodes();
         
         for (Node neighbor : neighborDistances.keySet()) {
@@ -78,7 +84,10 @@ public class Dijkstra {
                 continue;
             }
             
-            double currentDistance = parent.getShortestDistance() + neighborDistances.get(neighbor);
+            System.out.println("->Currently checking neighbor " + neighbor.getName());
+            
+            double currentDistance = parent.getShortestDistance() 
+                    + neighborDistances.get(neighbor) + heuristic.calculateWeight(neighbor, target);
             
             //set the shortest route for this neighbor, if applicable
             if (currentDistance < neighbor.getShortestDistance()) {
@@ -97,5 +106,4 @@ public class Dijkstra {
             node.setPreviousNode(parent);
         }
     }
-    
 }

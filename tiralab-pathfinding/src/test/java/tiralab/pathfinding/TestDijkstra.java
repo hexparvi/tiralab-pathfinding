@@ -1,12 +1,11 @@
 package tiralab.pathfinding;
 
-import java.util.ArrayList;
 import static org.junit.Assert.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import org.junit.Test;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.ArrayList;
 import tiralab.pathfinding.domain.Node;
 
 /**
@@ -89,8 +88,10 @@ public class TestDijkstra {
         
         dijkstra.run(nodeA);
         
-        assertEquals("Shortest path to node is incorrect", nodeA.getName(), nodeC.getPreviousNode().getName());
-        assertEquals("Shortest path to node is incorrect", nodeC.getName(), nodeB.getPreviousNode().getName());
+        assertEquals("Shortest path to node is incorrect", 
+                nodeA.getName(), nodeC.getPreviousNode().getName());
+        assertEquals("Shortest path to node is incorrect", 
+                nodeC.getName(), nodeB.getPreviousNode().getName());
     }
     
     @Test

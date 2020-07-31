@@ -20,9 +20,12 @@ public class TestNode {
         Node nodeBigger = new Node("B");
         nodeBigger.setShortestDistance(7);
         
-        assertTrue("Node with smaller shortest distance should be ordered before larger nodes", nodeSmaller.compareTo(nodeBigger) < 0);
-        assertTrue("Node with larger shortest distance should be ordered after smaller nodes", nodeBigger.compareTo(nodeSmaller) > 0);
-        assertTrue("Nodes with same shortest distance are not equal", nodeBigger.compareTo(nodeBigger) == 0);
+        assertTrue("Node with smaller shortest distance should be ordered before larger nodes", 
+                nodeSmaller.compareTo(nodeBigger) < 0);
+        assertTrue("Node with larger shortest distance should be ordered after smaller nodes", 
+                nodeBigger.compareTo(nodeSmaller) > 0);
+        assertTrue("Nodes with same shortest distance are not equal", 
+                nodeBigger.compareTo(nodeBigger) == 0);
     }
     
     @Test(expected = IllegalArgumentException.class)

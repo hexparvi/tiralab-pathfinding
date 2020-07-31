@@ -10,25 +10,42 @@ import java.util.Objects;
 public class Node implements Comparable<Node> {
     
     private String name;
-    private int shortestDistance = Integer.MAX_VALUE;
+    private int x;
+    private int y;
+    private double shortestDistance = Double.MAX_VALUE;
     private Node previousNode;
-    Map<Node, Integer> adjacentNodes = new HashMap<>();
-    
-    public void addDestination(Node destination, int distance) {
-        adjacentNodes.put(destination, distance);
-    }
+    private Map<Node, Double> adjacentNodes = new HashMap<>();
+    private boolean obstacle;
     
     public Node(String name) {
         this.name = name;
     }
+    
+    public Node(String name, int xCoord, int yCoord) {
+        this.name = name;
+        this.x = xCoord;
+        this.y = yCoord;
+    }
+    
+    //what is overloading lmao
+    public Node(String name, int xCoord, int yCoord, boolean isObstacle) {
+        this.name = name;
+        this.x = xCoord;
+        this.y = yCoord;
+        this.obstacle = isObstacle;
+    }
+    
+    public void addDestination(Node destination, double distance) {
+        adjacentNodes.put(destination, distance);
+    }
 
-    public int getShortestDistance() {
+    public double getShortestDistance() {
         return shortestDistance;
     }
 
     //disallowing setting shortestDistance to a value larger than previously here
     //would make reusing nodes impossible -> does it matter
-    public void setShortestDistance(int shortestDistance) {
+    public void setShortestDistance(double shortestDistance) {
         if (shortestDistance < 0) {
             throw new IllegalArgumentException("Distance between nodes should not be negative");
         }
@@ -37,11 +54,11 @@ public class Node implements Comparable<Node> {
     }
     
     //TODO: validate for negative edge weights
-    public Map<Node, Integer> getAdjacentNodes() {
+    public Map<Node, Double> getAdjacentNodes() {
         return adjacentNodes;
     }
 
-    public void setAdjacentNodes(Map<Node, Integer> adjacentNodes) {
+    public void setAdjacentNodes(Map<Node, Double> adjacentNodes) {
         this.adjacentNodes = adjacentNodes;
     }
 
@@ -60,12 +77,41 @@ public class Node implements Comparable<Node> {
     public void setName(String name) {
         this.name = name;
     }
-    
-    
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public boolean isObstacle() {
+        return obstacle;
+    }
+
+    public void setObstacle(boolean obstacle) {
+        this.obstacle = obstacle;
+    }
     
     @Override
     public int compareTo(Node o) {
-        return this.getShortestDistance() - o.getShortestDistance();
+        if (this.getShortestDistance () < o.getShortestDistance()) {
+            return -1;
+        } else if (this.getShortestDistance() > o.getShortestDistance()) {
+            return 1;
+        }
+        
+        return 0;
+        //return this.getShortestDistance() - o.getShortestDistance();
     }
     
     @Override
