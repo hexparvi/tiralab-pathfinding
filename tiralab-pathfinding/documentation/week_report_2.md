@@ -9,9 +9,9 @@ Some testing and comments. Checkstyle config.
 
 ## Time spent this week:
 
-*Research - 3h
-*Implementation - 9h
-*Other - 2h
+* Research - 3h
+* Implementation - 9h
+* Other - 2h
 
 **Total:** 14h
 
