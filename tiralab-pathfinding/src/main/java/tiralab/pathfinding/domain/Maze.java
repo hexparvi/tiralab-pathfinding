@@ -39,6 +39,15 @@ public class Maze {
         this.nodeArray = nodes;
     }
     
+    public boolean isWalkable(int x, int y) {
+        if (!pointIsWithinMazeBounds(x, y)) {
+            return false;
+        } else if (nodeArray[x][y].isObstacle()) {
+            return false;
+        }
+        return true;
+    }
+    
     /**
      * Finds the node at position (x,y) in the Maze.
      * @param x x-coordinate

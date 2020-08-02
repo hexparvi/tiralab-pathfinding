@@ -8,7 +8,6 @@ package tiralab.pathfinding;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Set;
 import tiralab.pathfinding.domain.Maze;
@@ -35,6 +34,10 @@ public class Astar {
         
         while (unvisitedNodes.size() != 0) {
             Node currentNode = unvisitedNodes.remove();
+            
+            if (currentNode.equals(end)) {
+                break;
+            }
             
             if (visitedNodes.contains(currentNode.getName())) {
                 continue;
@@ -71,7 +74,6 @@ public class Astar {
     }
     
     private void checkNeighbors(Maze maze, Node parent, Node target, Heuristic heuristic) {
-        Map<Node, Double> neighborDistances = parent.getAdjacentNodes();
         List<Node> neighbors = maze.findNeighborsOfNode(parent);
         
         for (Node neighbor : neighbors) {
@@ -91,6 +93,7 @@ public class Astar {
     }
     
     //dealing with overflow?
+    //also maybe this belongs to Node class? or should give dist between two nodes..?
     private double distanceToNode(Node node) {
         if (node.isObstacle()) return Double.MAX_VALUE / 2;
         else return 0.1;
