@@ -17,9 +17,8 @@ public class Main {
      */
     public static void main(String[] args) {
         
-        int[][] pixelArray = MyIO.readFromFile("src/testmazes/minimaze.png");
+        int[][] pixelArray = MyIO.readFromFile("src/testmazes/maze1.png");
 
-        //Maze maze = new Maze("src/mazes/maze1.png");
         Maze maze = new Maze(pixelArray, pixelArray.length, pixelArray[0].length);
         maze.generateNodes();
         
@@ -28,16 +27,17 @@ public class Main {
 //        Node end = maze.getNodeAtPosition(9, 8);
 
         //start/end nodes for maze1
-//        Node start = maze.getNodeAtPosition(484, 48);
-//        Node end = maze.getNodeAtPosition(19, 1001);
+        Node start = maze.getNodeAtPosition(484, 48);
+        Node end = maze.getNodeAtPosition(19, 1001);
 
-        Node start = maze.getNodeAtPosition(1,1);
-        Node end = maze.getNodeAtPosition(4, 9);
+//        Node start = maze.getNodeAtPosition(1,1);
+//        Node end = maze.getNodeAtPosition(4, 9);
         
         System.out.println("are nodes obstacles start/end: " + start.isObstacle() + "/" + end.isObstacle());
         
-        MazeDijkstra dijkstra = new MazeDijkstra();
-        dijkstra.run(start, maze, end);
+        Astar dijkstra = new Astar();
+        Heuristic heuristic = new Heuristic("");
+        dijkstra.run(maze, start, end, heuristic);
         
         
         List<Node> path = dijkstra.getShortestRoute(start, end);

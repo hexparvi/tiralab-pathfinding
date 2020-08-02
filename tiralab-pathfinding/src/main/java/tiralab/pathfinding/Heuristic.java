@@ -8,6 +8,7 @@ import tiralab.pathfinding.domain.Node;
  */
 public class Heuristic {
     
+    //use int instead? or enum..?
     private String name;
     
     public Heuristic(String heuristicName) {
@@ -19,6 +20,8 @@ public class Heuristic {
         
         if (this.name.equals("euclidean")) {
             estimate = euclidean(node, target);
+        } else if (this.name.equals("manhattan")) {
+            estimate = manhattan(node, target);
         }
         
         return estimate;
@@ -28,5 +31,10 @@ public class Heuristic {
         double dx = current.getX() - target.getX();
         double dy = current.getY() - target.getY();
         return Math.sqrt((dx * dx) + (dy * dy));
+    }
+    
+    //replace Math.abs
+    private double manhattan(Node current, Node target) {
+        return Math.abs(current.getX() - target.getX()) + Math.abs(current.getY() - target.getY());
     }
 }

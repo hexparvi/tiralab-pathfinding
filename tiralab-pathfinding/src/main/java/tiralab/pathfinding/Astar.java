@@ -7,9 +7,11 @@ package tiralab.pathfinding;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Set;
+import tiralab.pathfinding.domain.Maze;
 import tiralab.pathfinding.domain.Node;
 
 /**
@@ -24,14 +26,12 @@ public class Astar {
      * Run Dijkstra's algorithm on a given graph.
      * @param start starting node of graph
      */
-    public void run(Node start, Node end, Heuristic heuristic) {
+    public void run(Maze maze, Node start, Node end, Heuristic heuristic) {
         start.setShortestDistance(0);
         unvisitedNodes.add(start);
         
         while (unvisitedNodes.size() != 0) {
             Node currentNode = unvisitedNodes.remove();
-            
-            System.out.println("***Currently checking node " + currentNode.getName() + " ***");
             
             if (visitedNodes.contains(currentNode.getName())) {
                 continue;
@@ -39,7 +39,7 @@ public class Astar {
             
             visitedNodes.add(currentNode.getName());
             
-            checkNeighbors(currentNode, end, heuristic);
+            checkNeighbors(maze, currentNode, end, heuristic);
         }
     }
     
@@ -66,30 +66,19 @@ public class Astar {
         
         return shortestRoute;
     }
-//    private void printVisited() {
-//        System.out.println("--Current visited nodes--");
-//        for (String nodeName : visitedNodes) {
-//            System.out.print(nodeName + ", ");
-//        }
-//        System.out.println("");
-//    }
     
-    //lowest distance neighbor should already go to top of pq, no need to return
-    //refactor distance checks to their own method?
-    private void checkNeighbors(Node parent, Node target, Heuristic heuristic) {
+    private void checkNeighbors(Maze maze, Node parent, Node target, Heuristic heuristic) {
         Map<Node, Double> neighborDistances = parent.getAdjacentNodes();
+        List<Node> neighbors = maze.findNeighborsOfNode(parent);
         
-        for (Node neighbor : neighborDistances.keySet()) {
+        for (Node neighbor : neighbors) {
             if (this.visitedNodes.contains(neighbor.getName())) {
                 continue;
             }
             
-            System.out.println("->Currently checking neighbor " + neighbor.getName());
-            
             double currentDistance = parent.getShortestDistance() 
-                    + neighborDistances.get(neighbor) + heuristic.calculateWeight(neighbor, target);
+                    + distanceToNode(neighbor) + heuristic.calculateWeight(neighbor, target);
             
-            //set the shortest route for this neighbor, if applicable
             if (currentDistance < neighbor.getShortestDistance()) {
                 neighbor.setShortestDistance(currentDistance);
                 neighbor.setPreviousNode(parent);
@@ -98,12 +87,9 @@ public class Astar {
         }
     }
     
-    
-    //is this necessary
-    private void compareShortestDistances(Node node, Node parent, int currentDistance) {
-        if (currentDistance < node.getShortestDistance()) {
-            node.setShortestDistance(parent.getShortestDistance() + currentDistance);
-            node.setPreviousNode(parent);
-        }
+    //dealing with overflow?
+    private double distanceToNode(Node node) {
+        if (node.isObstacle()) return Double.MAX_VALUE / 2;
+        else return 0.1;
     }
 }

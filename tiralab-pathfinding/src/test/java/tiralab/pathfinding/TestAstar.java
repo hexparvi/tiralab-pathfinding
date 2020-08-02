@@ -5,7 +5,7 @@
  */
 package tiralab.pathfinding;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import tiralab.pathfinding.domain.Maze;
 import tiralab.pathfinding.domain.Node;
@@ -15,7 +15,7 @@ import tiralab.pathfinding.io.MyIO;
  *
  * @author hexparvi
  */
-public class TestMazeDijkstra {
+public class TestAstar {
     //TO TEST:
     //
     
@@ -30,9 +30,10 @@ public class TestMazeDijkstra {
     public void dijkstraTest() {
         Maze maze = generateTestMaze();
         Node[][] nodeArray = maze.getNodeArray();
-        MazeDijkstra dijkstra = new MazeDijkstra();
+        Astar dijkstra = new Astar();
+        Heuristic heuristic = new Heuristic("");
         
-        dijkstra.run(nodeArray[1][1], maze, nodeArray[9][9]);
+        dijkstra.run(maze, nodeArray[1][1], nodeArray[9][9], heuristic);
         
         assertEquals("Shortest route to node is incorrect", 
                 nodeArray[4][9].getPreviousNode(), nodeArray[5][8]);
