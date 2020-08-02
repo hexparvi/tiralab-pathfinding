@@ -9,8 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
- * @author hexparvi
+ * Represents a maze image as a graph of nodes
  */
 public class Maze {
     private Node[][] nodeArray;

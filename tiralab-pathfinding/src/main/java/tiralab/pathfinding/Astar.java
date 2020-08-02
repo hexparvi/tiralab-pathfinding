@@ -23,8 +23,11 @@ public class Astar {
     private Set<String> visitedNodes = new HashSet<>();
     
     /**
-     * Run Dijkstra's algorithm on a given graph.
-     * @param start starting node of graph
+     * Run A* algorithm on a given graph.
+     * @param maze maze containing the start and end Nodes
+     * @param start first node in path
+     * @param end last node in path
+     * @param heuristic heuristic used by the algorithm
      */
     public void run(Maze maze, Node start, Node end, Heuristic heuristic) {
         start.setShortestDistance(0);
@@ -43,12 +46,12 @@ public class Astar {
         }
     }
     
-    //TODO: return stack instead for 'correct' ordering
+    //TODO: return stack instead for 'correct' ordering?
     //TODO: check that nodes are actually found in graph?
     //TODO: check that run has been called before calling this method?
     
     /**
-     * Find shortest route between two nodes.
+     * Reconstruct the shortest route between two nodes.
      * @param start starting node for path
      * @param end ending node for path
      * @return all nodes on the shortest path between start and end
@@ -77,7 +80,7 @@ public class Astar {
             }
             
             double currentDistance = parent.getShortestDistance() 
-                    + distanceToNode(neighbor) + heuristic.calculateWeight(neighbor, target);
+                    + distanceToNode(neighbor) + heuristic.estimateCost(neighbor, target);
             
             if (currentDistance < neighbor.getShortestDistance()) {
                 neighbor.setShortestDistance(currentDistance);

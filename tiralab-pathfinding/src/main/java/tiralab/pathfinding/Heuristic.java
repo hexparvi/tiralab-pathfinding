@@ -3,8 +3,7 @@ package tiralab.pathfinding;
 import tiralab.pathfinding.domain.Node;
 
 /**
- *
- * @author hexparvi
+ * Heuristic for use in A*
  */
 public class Heuristic {
     
@@ -15,7 +14,13 @@ public class Heuristic {
         this.name = heuristicName;
     }
     
-    public double calculateWeight(Node node, Node target) {
+    /**
+     * Estimates cost for moving between given nodes
+     * @param node current node
+     * @param target target node
+     * @return cost estimate for moving from start to target
+     */
+    public double estimateCost(Node node, Node target) {
         double estimate = 0;
         
         if (this.name.equals("euclidean")) {
@@ -33,7 +38,7 @@ public class Heuristic {
         return Math.sqrt((dx * dx) + (dy * dy));
     }
     
-    //replace Math.abs
+    //replace Math.abs?
     private double manhattan(Node current, Node target) {
         return Math.abs(current.getX() - target.getX()) + Math.abs(current.getY() - target.getY());
     }
