@@ -17,27 +17,31 @@ public class Main {
      */
     public static void main(String[] args) {
         
-        int[][] pixelArray = MyIO.readFromFile("src/mazes/minicave.png");
-
+        //test using cave1
+        int[][] pixelArray = MyIO.readFromFile("src/mazes/cave1.png");
         Maze maze = new Maze(pixelArray, pixelArray.length, pixelArray[0].length);
         maze.generateNodes();
+        Node start = maze.getNodeAtPosition(99, 178);
+        Node end = maze.getNodeAtPosition(334, 714);
         
-        //start/end nodes for minimaze2
-//        Node start = maze.getNodeAtPosition(3, 3);
-//        Node end = maze.getNodeAtPosition(9, 8);
-
-        //start/end nodes for maze1
+        //test using minicave
+//        int[][] pixelArray = MyIO.readFromFile("src/mazes/minicave.png");
+//        Maze maze = new Maze(pixelArray, pixelArray.length, pixelArray[0].length);
+//        maze.generateNodes();
+//        Node start = maze.getNodeAtPosition(1, 1);
+//        Node end = maze.getNodeAtPosition(8, 8);
+        
+        //test using maze1
+//        int[][] pixelArray = MyIO.readFromFile("src/mazes/maze1.png");
+//        Maze maze = new Maze(pixelArray, pixelArray.length, pixelArray[0].length);
+//        maze.generateNodes();
 //        Node start = maze.getNodeAtPosition(484, 48);
 //        Node end = maze.getNodeAtPosition(19, 1001);
         
-        //start/end nodes for cave1
-//        Node start = maze.getNodeAtPosition(484, 48);
-//        Node end = maze.getNodeAtPosition(344, 932);
-        
-        //start/end nodes for minicave
-        Node start = maze.getNodeAtPosition(1, 1);
-        Node end = maze.getNodeAtPosition(8, 8);
-
+        //test using minimaze
+//        int[][] pixelArray = MyIO.readFromFile("src/mazes/minimaze.png");
+//        Maze maze = new Maze(pixelArray, pixelArray.length, pixelArray[0].length);
+//        maze.generateNodes();
 //        Node start = maze.getNodeAtPosition(1,1);
 //        Node end = maze.getNodeAtPosition(4, 9);
         
@@ -47,7 +51,7 @@ public class Main {
 //        Heuristic heuristic = new Heuristic("");
 //        dijkstra.run(maze, start, end, heuristic);
         
-        JPS2 jps = new JPS2();
+        JPS jps = new JPS();
         jps.run(maze, start, end);
         
         
