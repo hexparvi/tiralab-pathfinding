@@ -40,6 +40,8 @@ public class JPS {
             visitedNodes.add(currentNode.getName());
             
             checkSuccessors(currentNode, end, maze, successors(currentNode, previousNode, maze, start, end));
+            
+            previousNode = currentNode;
         }
     }
     
