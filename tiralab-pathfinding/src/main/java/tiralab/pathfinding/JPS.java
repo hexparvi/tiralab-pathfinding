@@ -30,6 +30,13 @@ public class JPS {
         
         while (!unvisitedNodes.isEmpty()) {
             Node currentNode = unvisitedNodes.remove();
+            previousNode = currentNode.getPreviousNode();
+            
+            System.out.println("");
+            System.out.println("***Checking node " + currentNode.getName());
+            if (previousNode != null) {
+                System.out.println("   (preceded by " + previousNode.getName() + ")");
+            }
             
             if (currentNode.equals(end)) {
                 System.out.println("End Node found!");
@@ -41,7 +48,8 @@ public class JPS {
             
             checkSuccessors(currentNode, end, maze, successors(currentNode, previousNode, maze, start, end));
             
-            previousNode = currentNode;
+            //...this can't be right..???
+            //previousNode = currentNode;
         }
     }
     
@@ -51,18 +59,27 @@ public class JPS {
     
     public void checkSuccessors(Node parent, Node target, Maze maze, List<Node> successors) {
         for (Node successor : successors) {
+            System.out.println(">>Checking successor " + successor.getName());
+            
             if (this.visitedNodes.contains(successor.getName())) {
+                System.out.println(">>>Has been visited, skipping...");
                 continue;
             }
             
             double currentDistance = parent.getShortestDistance() 
                    + distanceToNode(successor) + heuristic.estimateCost(parent, successor);
+            System.out.println("   current / previous distance: " + currentDistance 
+                    + " / " + successor.getShortestDistance());
             
-            //if (currentDistance < successor.getShortestDistance()) {
+            
+            if (currentDistance <= successor.getShortestDistance()) {
+                System.out.println("---- currentDistance is shorter, setting new distance/parent");
                 successor.setShortestDistance(currentDistance);
                 successor.setPreviousNode(parent);
                 unvisitedNodes.add(successor);
-            //}
+            } else {
+                System.out.println("---- currentDistance was NOT shorter!");
+            }
         }
     }
     
@@ -212,6 +229,6 @@ public class JPS {
     
     private double distanceToNode(Node node) {
         if (node.isObstacle()) return Double.MAX_VALUE / 2;
-        else return 0.1;
+        else return 0.0;
     }
 }

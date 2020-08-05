@@ -54,6 +54,7 @@ public class Main {
         JPS jps = new JPS();
         jps.run(maze, start, end);
         
+        System.out.println("Search has stopped.");
         
         List<Node> path = jps.getShortestRoute(start, end);
         
