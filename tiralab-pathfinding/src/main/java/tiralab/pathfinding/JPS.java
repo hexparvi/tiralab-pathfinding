@@ -32,59 +32,33 @@ public class JPS {
             Node currentNode = unvisitedNodes.remove();
             previousNode = currentNode.getPreviousNode();
             
-            System.out.println("");
-            System.out.println("***Checking node " + currentNode.getName());
-            if (previousNode != null) {
-                System.out.println("   (preceded by " + previousNode.getName() + ")");
-            }
-            
-            if (currentNode.equals(end)) {
-                System.out.println("End Node found!");
-                break;
-            }
+            if (currentNode.equals(end)) break;
             if (visitedNodes.contains(currentNode.getName())) continue;
             
             visitedNodes.add(currentNode.getName());
             
             checkSuccessors(currentNode, end, maze, successors(currentNode, previousNode, maze, start, end));
-            
-            //...this can't be right..???
-            //previousNode = currentNode;
         }
-    }
-    
-    public List<Node> getNeighbors(Node current, Maze maze) {
-        return maze.findNeighborsOfNode(current);
     }
     
     public void checkSuccessors(Node parent, Node target, Maze maze, List<Node> successors) {
         for (Node successor : successors) {
-            System.out.println(">>Checking successor " + successor.getName());
             
-            if (this.visitedNodes.contains(successor.getName())) {
-                System.out.println(">>>Has been visited, skipping...");
-                continue;
-            }
+            if (this.visitedNodes.contains(successor.getName())) continue;
             
             double currentDistance = parent.getShortestDistance() 
                    + distanceToNode(successor) + heuristic.estimateCost(parent, successor);
-            System.out.println("   current / previous distance: " + currentDistance 
-                    + " / " + successor.getShortestDistance());
-            
             
             if (currentDistance <= successor.getShortestDistance()) {
-                System.out.println("---- currentDistance is shorter, setting new distance/parent");
                 successor.setShortestDistance(currentDistance);
                 successor.setPreviousNode(parent);
                 unvisitedNodes.add(successor);
-            } else {
-                System.out.println("---- currentDistance was NOT shorter!");
             }
         }
     }
     
     public List<Node> successors(Node current, Node parent, Maze maze, Node start, Node end) {
-        if (parent == null) return getNeighbors(current, maze);
+        if (parent == null) return maze.findNeighborsOfNode(current);
         
         List<Node> successors = new ArrayList<>();
         List<Node> prunedNeighbors = pruneNeighbors(parent, current, maze);
@@ -105,8 +79,9 @@ public class JPS {
         if (jumpedTo.equals(end)) return jumpedTo;
         if (hasForcedNeighbors(jumpedTo, jumpedFrom, maze)) return jumpedTo;
         
-        int dx = jumpX - jumpedFrom.getX();
-        int dy = jumpY - jumpedFrom.getY();
+        int[] direction = direction(jumpedFrom, jumpedTo);
+        int dx = direction[0];
+        int dy = direction[1];
         
         if (dx != 0 && dy != 0) {
             if (jump(jumpedTo, (jumpX + dx), jumpY, maze, end) != null) return jumpedTo;
@@ -119,8 +94,9 @@ public class JPS {
     public List<Node> pruneNeighbors(Node parent, Node current, Maze maze) {
         List<Node> prunedNeighbors = new ArrayList<>();
         
-        int dx = current.getX() - parent.getX();
-        int dy = current.getY() - parent.getY();
+        int[] direction = direction(parent, current);
+        int dx = direction[0];
+        int dy = direction[1];
         
         if (dx != 0 && dy != 0) {
             if (maze.isWalkable(current.getX() + dx, current.getY() + dy)) {
@@ -176,8 +152,9 @@ public class JPS {
     }
     
     public boolean hasForcedNeighbors(Node node, Node parent, Maze maze) {
-        int dx = node.getX() - parent.getX();
-        int dy = node.getY() - parent.getY();
+        int[] direction = direction(parent, node);
+        int dx = direction[0];
+        int dy = direction[1];
         
         if (dx != 0 && dy != 0) {
             if (!maze.isWalkable(node.getX() - dx, node.getY()) 
@@ -216,10 +193,7 @@ public class JPS {
         shortestRoute.add(end);
         Node currentNode = end;
         
-//        System.out.println("Printing found route: ");
-//        System.out.println(currentNode.getName() + " ->");
         while (!currentNode.equals(start)) {
-//            System.out.println(currentNode.getPreviousNode().getName() + " -> ");
             shortestRoute.add(currentNode.getPreviousNode());
             currentNode = currentNode.getPreviousNode();
         }
@@ -230,5 +204,21 @@ public class JPS {
     private double distanceToNode(Node node) {
         if (node.isObstacle()) return Double.MAX_VALUE / 2;
         else return 0.0;
+    }
+    
+    private int[] direction(Node from, Node to) {
+        int dx = to.getX() - from.getX();
+        int dy = to.getY() - from.getY();
+        int[] direction = {0, 0};
+        
+        if (dx != 0) {
+            direction[0] = dx/Math.abs(dx);
+        }
+        
+        if (dy != 0) {
+            direction[1] = dy/Math.abs(dy);
+        }
+        
+        return direction;
     }
 }
