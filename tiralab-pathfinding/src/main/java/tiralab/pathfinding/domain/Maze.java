@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tiralab.pathfinding.domain;
 
 import java.util.ArrayList;
@@ -32,13 +27,19 @@ public class Maze {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 nodes[x][y] = new Node("(" + (String.valueOf(x) + ", " + String.valueOf(y)) + ")",
-                        x, y, isPointAnObstacle(x, y, this.pixels[x][y]));
+                        x, y, isPixelAnObstacle(this.pixels[x][y]));
             }
         }
         
         this.nodeArray = nodes;
     }
     
+    /**
+     * Checks if a point is a walkable position in the maze.
+     * @param x x-coordinate of the point
+     * @param y y-coordinate of the point
+     * @return true if point is within maze boundaries and does not count as an obstacle, false otherwise
+     */
     public boolean isWalkable(int x, int y) {
         if (!pointIsWithinMazeBounds(x, y)) {
             return false;
@@ -89,7 +90,7 @@ public class Maze {
         return ((x >= 0 && x < width) && (y >= 0 && y < height));
     }
     
-    private boolean isPointAnObstacle(int x, int y, int RGBvalue) {
+    private boolean isPixelAnObstacle(int RGBvalue) {
         int blue = RGBvalue & 0xff;
         int green = (RGBvalue & 0xff00) >> 8;
         int red = (RGBvalue & 0xff0000) >> 16;

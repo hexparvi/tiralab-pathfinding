@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tiralab.pathfinding;
 
 import java.util.ArrayList;
@@ -14,14 +9,19 @@ import tiralab.pathfinding.domain.Maze;
 import tiralab.pathfinding.domain.Node;
 
 /**
- *
- * @author hexparvi
+ * 
  */
 public class JPS {
     private PriorityQueue<Node> unvisitedNodes = new PriorityQueue<>();
     private Set<String> visitedNodes = new HashSet<>();
     private Heuristic heuristic = new Heuristic("euclidean");
     
+    /**
+     * Run JPS on a given graph.
+     * @param maze maze containing start and end nodes
+     * @param start first node in path
+     * @param end last node in path
+     */
     public void run(Maze maze, Node start, Node end) {
         
         start.setShortestDistance(0);
@@ -37,11 +37,11 @@ public class JPS {
             
             visitedNodes.add(currentNode.getName());
             
-            checkSuccessors(currentNode, end, maze, successors(currentNode, previousNode, maze, start, end));
+            checkSuccessors(currentNode, successors(currentNode, previousNode, maze, end));
         }
     }
     
-    public void checkSuccessors(Node parent, Node target, Maze maze, List<Node> successors) {
+    private void checkSuccessors(Node parent, List<Node> successors) {
         for (Node successor : successors) {
             
             if (this.visitedNodes.contains(successor.getName())) continue;
@@ -57,7 +57,15 @@ public class JPS {
         }
     }
     
-    public List<Node> successors(Node current, Node parent, Maze maze, Node start, Node end) {
+    /**
+     * Finds potential successors for a node.
+     * @param current current node
+     * @param parent parent node
+     * @param maze maze containing current node and the parent
+     * @param end target node of JPS
+     * @return list of successor nodes
+     */
+    private List<Node> successors(Node current, Node parent, Maze maze, Node end) {
         if (parent == null) return maze.findNeighborsOfNode(current);
         
         List<Node> successors = new ArrayList<>();
@@ -71,7 +79,16 @@ public class JPS {
         return successors;
     }
     
-    public Node jump(Node jumpedFrom, int jumpX, int jumpY, Maze maze, Node end) {
+    /**
+     * Attempts a jump from a node to a neighboring node.
+     * @param jumpedFrom previous node
+     * @param jumpX x-coordinate of attempted jump
+     * @param jumpY y-coordinate of attempted jump
+     * @param maze maze containing previous node
+     * @param end target node for JPS
+     * @return found jump point, null if no jump point is found
+     */
+    private Node jump(Node jumpedFrom, int jumpX, int jumpY, Maze maze, Node end) {
         if (!maze.isWalkable(jumpX, jumpY)) return null;
         
         Node jumpedTo = maze.getNodeAtPosition(jumpX, jumpY);
@@ -91,7 +108,14 @@ public class JPS {
         return jump(jumpedTo, (jumpX + dx), (jumpY + dy), maze, end);
     }
     
-    public List<Node> pruneNeighbors(Node parent, Node current, Maze maze) {
+    /**
+     * Prunes all but natural and forced neighbors from a node's neighbor list.
+     * @param parent parent node
+     * @param current current node
+     * @param maze maze containing current node and the parent
+     * @return list of node's natural and forced neighbors
+     */
+    private List<Node> pruneNeighbors(Node parent, Node current, Maze maze) {
         List<Node> prunedNeighbors = new ArrayList<>();
         
         int[] direction = direction(parent, current);
@@ -151,7 +175,14 @@ public class JPS {
         return prunedNeighbors;
     }
     
-    public boolean hasForcedNeighbors(Node node, Node parent, Maze maze) {
+    /**
+     * Checks if a node has forced neighbors when arriving from parent node.
+     * @param node current node
+     * @param parent parent node
+     * @param maze maze containing current node and the parent
+     * @return true if node has forced neighbors, false otherwise
+     */
+    private boolean hasForcedNeighbors(Node node, Node parent, Maze maze) {
         int[] direction = direction(parent, node);
         int dx = direction[0];
         int dy = direction[1];
@@ -187,6 +218,7 @@ public class JPS {
         return false;
     }
     
+    //copy-paste from Astar...
     public ArrayList<Node> getShortestRoute(Node start, Node end) {
         ArrayList<Node> shortestRoute = new ArrayList<>();
         
@@ -201,11 +233,18 @@ public class JPS {
         return shortestRoute;
     }
     
+    //move this functionality to Node class?
     private double distanceToNode(Node node) {
         if (node.isObstacle()) return Double.MAX_VALUE / 2;
         else return 0.0;
     }
     
+    /**
+     * Gives the direction of movement from one node to another.
+     * @param from parent node
+     * @param to child node
+     * @return array of length 2 representing the change in x- and y-coordinates
+     */
     private int[] direction(Node from, Node to) {
         int dx = to.getX() - from.getX();
         int dy = to.getY() - from.getY();

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tiralab.pathfinding;
 
 import java.util.ArrayList;
@@ -14,8 +9,7 @@ import tiralab.pathfinding.domain.Maze;
 import tiralab.pathfinding.domain.Node;
 
 /**
- *
- * @author hexparvi
+ * 
  */
 public class Astar {
     private PriorityQueue<Node> unvisitedNodes = new PriorityQueue<>();
@@ -92,8 +86,7 @@ public class Astar {
         }
     }
     
-    //dealing with overflow?
-    //also maybe this belongs to Node class? or should give dist between two nodes..?
+    //move this functionality to Node class?
     private double distanceToNode(Node node) {
         if (node.isObstacle()) return Double.MAX_VALUE / 2;
         else return 0.1;

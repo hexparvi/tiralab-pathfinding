@@ -8,7 +8,6 @@ import tiralab.pathfinding.io.MyIO;
 
 /**
  *
- * @author hexparvi
  */
 public class Main {
 
@@ -58,13 +57,10 @@ public class Main {
         
         int[][] newPixels = drawPath(pixelArray, path);
         
-//        for (Node node : path) {
-//            pixelArray[node.getX()][node.getY()] = Color.RED.getRGB();
-//        }
-        
         MyIO.writeToFile(newPixels, "png", "paths/FoundPath.png");
     }
     
+    //move this to Maze...?
     private static int[][] drawPath(int[][] pixelArray, List<Node> path) {
         Node previousNode = null;
         for (Node node : path) {
@@ -88,6 +84,7 @@ public class Main {
         return pixelArray;
     }
     
+    //temporary copy-paste from JPS
     private static int[] direction(Node from, Node to) {
         int dx = to.getX() - from.getX();
         int dy = to.getY() - from.getY();
