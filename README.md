@@ -6,3 +6,5 @@
 [Week 2](https://github.com/hexparvi/tiralab-pathfinding/blob/master/tiralab-pathfinding/documentation/week_report_2.md)
 
 [Week 3](https://github.com/hexparvi/tiralab-pathfinding/blob/master/tiralab-pathfinding/documentation/week_report_3.md)
+
+[Week 4](https://github.com/hexparvi/tiralab-pathfinding/blob/master/tiralab-pathfinding/documentation/week_report_4.md)
