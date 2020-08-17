@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tiralab.pathfinding;
 
 import static org.junit.Assert.assertEquals;
@@ -13,11 +8,10 @@ import tiralab.pathfinding.io.MyIO;
 
 /**
  *
- * @author hexparvi
  */
 public class TestAstar {
     //TO TEST:
-    //
+    // test using different heuristics
     
     private Maze generateTestMaze() {
         int[][] pixelArray = MyIO.readFromFile("src/testmazes/minimaze.png");
@@ -30,10 +24,10 @@ public class TestAstar {
     public void dijkstraTest() {
         Maze maze = generateTestMaze();
         Node[][] nodeArray = maze.getNodeArray();
-        Astar dijkstra = new Astar();
         Heuristic heuristic = new Heuristic("");
+        Astar dijkstra = new Astar(heuristic);
         
-        dijkstra.run(maze, nodeArray[1][1], nodeArray[9][9], heuristic);
+        dijkstra.run(maze, nodeArray[1][1], nodeArray[9][9]);
         
         assertEquals("Shortest route to node is incorrect", 
                 nodeArray[4][9].getPreviousNode(), nodeArray[5][8]);

@@ -5,7 +5,6 @@ import org.junit.Test;
 
 /**
  *
- * @author hexparvi
  */
 public class TestNode {
     

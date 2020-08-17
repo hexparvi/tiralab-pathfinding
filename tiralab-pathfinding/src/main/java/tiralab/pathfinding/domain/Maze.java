@@ -41,11 +41,8 @@ public class Maze {
      * @return true if point is within maze boundaries and does not count as an obstacle, false otherwise
      */
     public boolean isWalkable(int x, int y) {
-        if (!pointIsWithinMazeBounds(x, y)) {
-            return false;
-        } else if (nodeArray[x][y].isObstacle()) {
-            return false;
-        }
+        if (!pointIsWithinMazeBounds(x, y)) return false;
+        else if (nodeArray[x][y].isObstacle()) return false;
         return true;
     }
     

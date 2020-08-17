@@ -11,7 +11,7 @@ import tiralab.pathfinding.domain.Node;
 /**
  * 
  */
-public class JPS {
+public class JPS implements Pathfinder {
     private PriorityQueue<Node> unvisitedNodes = new PriorityQueue<>();
     private Set<String> visitedNodes = new HashSet<>();
     private Heuristic heuristic = new Heuristic("euclidean");
@@ -22,6 +22,7 @@ public class JPS {
      * @param start first node in path
      * @param end last node in path
      */
+    @Override
     public void run(Maze maze, Node start, Node end) {
         
         start.setShortestDistance(0);
@@ -219,6 +220,7 @@ public class JPS {
     }
     
     //copy-paste from Astar...
+    @Override
     public ArrayList<Node> getShortestRoute(Node start, Node end) {
         ArrayList<Node> shortestRoute = new ArrayList<>();
         

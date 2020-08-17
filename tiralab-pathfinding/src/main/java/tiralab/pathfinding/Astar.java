@@ -11,9 +11,14 @@ import tiralab.pathfinding.domain.Node;
 /**
  * 
  */
-public class Astar {
+public class Astar implements Pathfinder {
     private PriorityQueue<Node> unvisitedNodes = new PriorityQueue<>();
     private Set<String> visitedNodes = new HashSet<>();
+    private Heuristic heuristic;
+    
+    public Astar(Heuristic heuristic) {
+        this.heuristic = heuristic;
+    }
     
     /**
      * Run A* algorithm on a given graph.
@@ -22,7 +27,8 @@ public class Astar {
      * @param end last node in path
      * @param heuristic heuristic used by the algorithm
      */
-    public void run(Maze maze, Node start, Node end, Heuristic heuristic) {
+    @Override
+    public void run(Maze maze, Node start, Node end) {
         start.setShortestDistance(0);
         unvisitedNodes.add(start);
         
@@ -39,7 +45,7 @@ public class Astar {
             
             visitedNodes.add(currentNode.getName());
             
-            checkNeighbors(maze, currentNode, end, heuristic);
+            checkNeighbors(maze, currentNode, end);
         }
     }
     
@@ -53,6 +59,7 @@ public class Astar {
      * @param end ending node for path
      * @return all nodes on the shortest path between start and end
      */
+    @Override
     public ArrayList<Node> getShortestRoute(Node start, Node end) {
         ArrayList<Node> shortestRoute = new ArrayList<>();
         
@@ -67,7 +74,7 @@ public class Astar {
         return shortestRoute;
     }
     
-    private void checkNeighbors(Maze maze, Node parent, Node target, Heuristic heuristic) {
+    private void checkNeighbors(Maze maze, Node parent, Node target) {
         List<Node> neighbors = maze.findNeighborsOfNode(parent);
         
         for (Node neighbor : neighbors) {
@@ -90,5 +97,13 @@ public class Astar {
     private double distanceToNode(Node node) {
         if (node.isObstacle()) return Double.MAX_VALUE / 2;
         else return 0.1;
+    }
+
+    public Heuristic getHeuristic() {
+        return heuristic;
+    }
+
+    public void setHeuristic(Heuristic heuristic) {
+        this.heuristic = heuristic;
     }
 }

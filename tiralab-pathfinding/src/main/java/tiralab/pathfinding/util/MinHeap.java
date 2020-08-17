@@ -16,7 +16,7 @@ public class MinHeap {
     
     public void insert(double item) {
         if (isFull()) extend();
-        
+        System.out.println("***Inserting " + item);
         heap[size] = item;
         heapifyUp(size);
         size++;
@@ -29,7 +29,7 @@ public class MinHeap {
     public double pop() {
         double top = heap[0];
         
-        heap[0] = heap[size];
+        heap[0] = heap[size - 1];
         size--;
         heapifyDown();
         
@@ -39,7 +39,7 @@ public class MinHeap {
     private void heapifyUp(int index) {
         double item = heap[index];
         
-        while (index > 0 && item > heap[parentOf(index)]) {
+        while (index > 0 && item < heap[parentOf(index)]) {
             swap(index, parentOf(index));
             index = parentOf(index);
         }
@@ -49,26 +49,29 @@ public class MinHeap {
         int index = 0;
         double item = heap[index];
         
-        while (index < size && item > heap[leftChildOf(index)]) {
+        while (index <= size && item > heap[leftChildOf(index)]) {
             swap(index, leftChildOf(index));
             index = leftChildOf(index);
         }
     }
     
     private void extend() {
-        //make heap bigger
+        double[] biggerHeap = new double[capacity * 2];
+        System.arraycopy(heap, 0, biggerHeap, 0, capacity);
+        this.heap = biggerHeap;
+        this.capacity = capacity * 2;
     }
     
     private boolean isFull() {
-        return heap.length > capacity;
+        return size >= (capacity - 1);
     }
     
     private int parentOf(int index) {
-        //should be floor?
-        return index / 2;
+        return (int) Math.floor(index / 2);
     }
     
     private int leftChildOf(int index) {
+        if (index == 0) return 1;
         return 2 * index;
     }
     
