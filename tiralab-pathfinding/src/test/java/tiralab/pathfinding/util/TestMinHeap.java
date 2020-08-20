@@ -38,7 +38,7 @@ public class TestMinHeap {
     }
     
     @Test
-    public void heapIncreaseTest() {
+    public void heapExtensionTest() {
         MinHeap heap = new MinHeap(2);
         heap.insert(3);
         heap.insert(5);

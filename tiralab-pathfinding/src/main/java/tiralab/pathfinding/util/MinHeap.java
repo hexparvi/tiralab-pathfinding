@@ -16,7 +16,6 @@ public class MinHeap {
     
     public void insert(double item) {
         if (isFull()) extend();
-        System.out.println("***Inserting " + item);
         heap[size] = item;
         heapifyUp(size);
         size++;
