@@ -44,7 +44,6 @@ public class JPS implements Pathfinder {
     
     private void checkSuccessors(Node parent, List<Node> successors) {
         for (Node successor : successors) {
-            
             if (this.visitedNodes.contains(successor.getName())) continue;
             
             double currentDistance = parent.getShortestDistance() 

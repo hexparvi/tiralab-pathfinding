@@ -7,12 +7,14 @@ import java.util.PriorityQueue;
 import java.util.Set;
 import tiralab.pathfinding.domain.Maze;
 import tiralab.pathfinding.domain.Node;
+import tiralab.pathfinding.util.MinHeap;
 
 /**
  * 
  */
 public class Astar implements Pathfinder {
-    private PriorityQueue<Node> unvisitedNodes = new PriorityQueue<>();
+    //private PriorityQueue<Node> unvisitedNodes = new PriorityQueue<>();
+    private MinHeap unvisitedNodes = new MinHeap(500);
     private Set<String> visitedNodes = new HashSet<>();
     private Heuristic heuristic;
     
@@ -85,7 +87,7 @@ public class Astar implements Pathfinder {
             double currentDistance = parent.getShortestDistance() 
                     + distanceToNode(neighbor) + heuristic.estimateCost(neighbor, target);
             
-            if (currentDistance < neighbor.getShortestDistance()) {
+            if (!neighbor.isObstacle() && currentDistance < neighbor.getShortestDistance()) {
                 neighbor.setShortestDistance(currentDistance);
                 neighbor.setPreviousNode(parent);
                 unvisitedNodes.add(neighbor);

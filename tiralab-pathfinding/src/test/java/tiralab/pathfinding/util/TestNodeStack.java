@@ -10,6 +10,21 @@ import tiralab.pathfinding.domain.Node;
 public class TestNodeStack {
     //TO TEST:
     //popping an empty stack
+    //all elements are copied correctly when extending
+    
+    @Test
+    public void stackPeekTest() {
+        Node node1 = new Node("1");
+        Node node2 = new Node("2");
+        Node node3 = new Node("3");
+        NodeStack stack = new NodeStack(10);
+        
+        stack.push(node1);
+        stack.push(node2);
+        stack.push(node3);
+        
+        assertEquals("Last pushed Node is not on top of NodeStack", node3, stack.peek());
+    }
     
     @Test
     public void stackPopTest() {
@@ -21,8 +36,9 @@ public class TestNodeStack {
         stack.push(node1);
         stack.push(node2);
         stack.push(node3);
+        stack.pop();
         
-        assertEquals("Last pushed Node is not on top of NodeStack", node3, stack.peek());
+        assertEquals("Last pushed Node is not on top of NodeStack", node2, stack.peek());
     }
     
     @Test

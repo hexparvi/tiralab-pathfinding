@@ -31,27 +31,26 @@ public class Main {
 //        Node end = maze.getNodeAtPosition(8, 8);
         
         //test using maze1
-        int[][] pixelArray = MyIO.readFromFile("src/mazes/maze1.png");
-        Maze maze = new Maze(pixelArray, pixelArray.length, pixelArray[0].length);
-        maze.generateNodes();
-        Node start = maze.getNodeAtPosition(484, 48);
-        Node end = maze.getNodeAtPosition(19, 1001);
-        
-        //test using minimaze
-//        int[][] pixelArray = MyIO.readFromFile("src/mazes/minimaze.png");
+//        int[][] pixelArray = MyIO.readFromFile("src/mazes/maze1.png");
 //        Maze maze = new Maze(pixelArray, pixelArray.length, pixelArray[0].length);
 //        maze.generateNodes();
-//        Node start = maze.getNodeAtPosition(1,1);
-//        Node end = maze.getNodeAtPosition(4, 9);
+//        Node start = maze.getNodeAtPosition(484, 48);
+//        Node end = maze.getNodeAtPosition(19, 1001);
+//        
+        //test using minimaze
+        int[][] pixelArray = MyIO.readFromFile("src/mazes/minimaze2.png");
+        Maze maze = new Maze(pixelArray, pixelArray.length, pixelArray[0].length);
+        maze.generateNodes();
+        Node start = maze.getNodeAtPosition(1,1);
+        Node end = maze.getNodeAtPosition(2, 7);
         
-//        Astar dijkstra = new Astar();
-//        Heuristic heuristic = new Heuristic("");
-//        dijkstra.run(maze, start, end, heuristic);
+        Astar algo = new Astar(new Heuristic(""));
+        algo.run(maze, start, end);
         
-        JPS jps = new JPS();
-        jps.run(maze, start, end);
+//        JPS algo = new JPS();
+//        algo.run(maze, start, end);
         
-        List<Node> path = jps.getShortestRoute(start, end);
+        List<Node> path = algo.getShortestRoute(start, end);
         
         //add found path to pixelsArray
         
