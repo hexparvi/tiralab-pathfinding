@@ -22,7 +22,7 @@ public class MinHeap {
         heapifyUp(size);
         size++;
         
-//        System.out.println("Adding node " + item.getName());
+//        System.out.println("Added node " + item.getName());
 //        printHeap();
 //        System.out.println("");
     }
@@ -62,10 +62,13 @@ public class MinHeap {
     private void heapifyDown() {
         int index = 0;
         Node item = heap[index];
+        int smallestChild = smallestChildOf(index);
         
-        while (index <= size && smallestChildOf(index) <= size && (item.compareTo(heap[smallestChildOf(index)]) > 0)) {
-            swap(index, smallestChildOf(index));
-            index = smallestChildOf(index);
+        while (index < size && smallestChild < size && (item.compareTo(heap[smallestChild]) > 0)) {
+            swap(index, smallestChild);
+            item = heap[smallestChild];
+            index = smallestChild;
+            smallestChild = smallestChildOf(index);
         }
     }
     
@@ -74,6 +77,10 @@ public class MinHeap {
         System.arraycopy(heap, 0, biggerHeap, 0, capacity);
         this.heap = biggerHeap;
         this.capacity = capacity * 2;
+        
+//        System.out.println("");
+//        System.out.println("HEAP EXTENDED");
+//        System.out.println("");
     }
     
     private boolean isFull() {
@@ -95,11 +102,11 @@ public class MinHeap {
     //what do if no children?
     private int smallestChildOf(int index) {
         int smallestChildIndex = size + 1;
-        if (leftChildOf(index) <= size) {
+        if (leftChildOf(index) < size) {
             smallestChildIndex = leftChildOf(index);
         }
         
-        if (rightChildOf(index) <= size && heap[rightChildOf(index)].compareTo(heap[leftChildOf(index)]) < 0) {
+        if (rightChildOf(index) < size && heap[rightChildOf(index)].compareTo(heap[leftChildOf(index)]) < 0) {
             smallestChildIndex = rightChildOf(index);
         }
         

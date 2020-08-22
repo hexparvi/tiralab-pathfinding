@@ -13,8 +13,8 @@ import tiralab.pathfinding.util.MinHeap;
  * 
  */
 public class Astar implements Pathfinder {
-    private PriorityQueue<Node> unvisitedNodes = new PriorityQueue<>();
-    //private MinHeap unvisitedNodes = new MinHeap(500);
+    //private PriorityQueue<Node> unvisitedNodes = new PriorityQueue<>();
+    private MinHeap unvisitedNodes = new MinHeap(500);
     private Set<String> visitedNodes = new HashSet<>();
     private Heuristic heuristic;
     
