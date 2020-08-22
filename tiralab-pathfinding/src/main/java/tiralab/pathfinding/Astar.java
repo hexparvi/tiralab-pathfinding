@@ -13,8 +13,8 @@ import tiralab.pathfinding.util.MinHeap;
  * 
  */
 public class Astar implements Pathfinder {
-    //private PriorityQueue<Node> unvisitedNodes = new PriorityQueue<>();
-    private MinHeap unvisitedNodes = new MinHeap(500);
+    private PriorityQueue<Node> unvisitedNodes = new PriorityQueue<>();
+    //private MinHeap unvisitedNodes = new MinHeap(500);
     private Set<String> visitedNodes = new HashSet<>();
     private Heuristic heuristic;
     
@@ -84,8 +84,10 @@ public class Astar implements Pathfinder {
                 continue;
             }
             
+//            double currentDistance = parent.getShortestDistance() 
+//                    + distanceToNode(neighbor) + heuristic.estimateCost(neighbor, target);
             double currentDistance = parent.getShortestDistance() 
-                    + distanceToNode(neighbor) + heuristic.estimateCost(neighbor, target);
+                    + 0.1 + heuristic.estimateCost(neighbor, target);
             
             if (!neighbor.isObstacle() && currentDistance < neighbor.getShortestDistance()) {
                 neighbor.setShortestDistance(currentDistance);

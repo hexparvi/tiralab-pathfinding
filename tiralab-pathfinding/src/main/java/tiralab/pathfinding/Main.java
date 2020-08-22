@@ -36,13 +36,27 @@ public class Main {
 //        maze.generateNodes();
 //        Node start = maze.getNodeAtPosition(484, 48);
 //        Node end = maze.getNodeAtPosition(19, 1001);
-//        
-        //test using minimaze
-        int[][] pixelArray = MyIO.readFromFile("src/mazes/minimaze2.png");
+       
+        //test using debug1
+//        int[][] pixelArray = MyIO.readFromFile("src/mazes/debug1.png");
+//        Maze maze = new Maze(pixelArray, pixelArray.length, pixelArray[0].length);
+//        maze.generateNodes();
+//        Node start = maze.getNodeAtPosition(70, 3);
+//        Node end = maze.getNodeAtPosition(88, 124);
+
+//test using debug3
+        int[][] pixelArray = MyIO.readFromFile("src/mazes/debug3.png");
         Maze maze = new Maze(pixelArray, pixelArray.length, pixelArray[0].length);
         maze.generateNodes();
-        Node start = maze.getNodeAtPosition(1,1);
-        Node end = maze.getNodeAtPosition(2, 7);
+        Node start = maze.getNodeAtPosition(1, 1);
+        Node end = maze.getNodeAtPosition(47, 42);
+        
+        //test using minimaze
+//        int[][] pixelArray = MyIO.readFromFile("src/mazes/minimaze2.png");
+//        Maze maze = new Maze(pixelArray, pixelArray.length, pixelArray[0].length);
+//        maze.generateNodes();
+//        Node start = maze.getNodeAtPosition(1,1);
+//        Node end = maze.getNodeAtPosition(2, 7);
         
         Astar algo = new Astar(new Heuristic(""));
         algo.run(maze, start, end);

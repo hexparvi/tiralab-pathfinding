@@ -22,9 +22,9 @@ public class MinHeap {
         heapifyUp(size);
         size++;
         
-        System.out.println("Adding node " + item.getName());
-        printHeap();
-        System.out.println("");
+//        System.out.println("Adding node " + item.getName());
+//        printHeap();
+//        System.out.println("");
     }
     
     public Node peek() {
@@ -38,9 +38,9 @@ public class MinHeap {
         size--;
         heapifyDown();
         
-        System.out.println("Removed top node " + top.getName());
-        printHeap();
-        System.out.println("");
+//        System.out.println("Removed top node " + top.getName());
+//        printHeap();
+//        System.out.println("");
         
         return top;
     }
@@ -53,7 +53,7 @@ public class MinHeap {
         Node item = heap[index];
         
         while (index > 0 && (item.compareTo(heap[parentOf(index)]) < 0) ) {
-            System.out.println("Swapping current index & parent: " + index + " & " + parentOf(index));
+//            System.out.println("Swapping current index & parent: " + index + " & " + parentOf(index));
             swap(index, parentOf(index));
             index = parentOf(index);
         }

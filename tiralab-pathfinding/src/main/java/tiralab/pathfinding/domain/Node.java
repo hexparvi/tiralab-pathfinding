@@ -12,7 +12,7 @@ public class Node implements Comparable<Node> {
     private String name;
     private int x;
     private int y;
-    private double shortestDistance = Double.MAX_VALUE;
+    private double shortestDistance = Double.MAX_VALUE / 2;
     private Node previousNode = null;
     private Map<Node, Double> adjacentNodes = new HashMap<>();
     private boolean obstacle;
