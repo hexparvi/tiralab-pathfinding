@@ -15,6 +15,7 @@ public class JPS implements Pathfinder {
     private PriorityQueue<Node> unvisitedNodes = new PriorityQueue<>();
     private Set<String> visitedNodes = new HashSet<>();
     private Heuristic heuristic = new Heuristic("euclidean");
+    private List<Node> foundPath;
     
     /**
      * Run JPS on a given graph.
@@ -40,6 +41,8 @@ public class JPS implements Pathfinder {
             
             checkSuccessors(currentNode, successors(currentNode, previousNode, maze, end));
         }
+        
+        checkPath(start, end);
     }
     
     private void checkSuccessors(Node parent, List<Node> successors) {
@@ -220,18 +223,21 @@ public class JPS implements Pathfinder {
     
     //copy-paste from Astar...
     @Override
-    public ArrayList<Node> getShortestRoute(Node start, Node end) {
-        ArrayList<Node> shortestRoute = new ArrayList<>();
+    public List<Node> getShortestRoute(Node start, Node end) {
+        return foundPath;
+    }
+    
+    // TODO: get intermediate nodes between jump points
+    private void checkPath(Node start, Node end) {
+        this.foundPath = new ArrayList<>();
         
-        shortestRoute.add(end);
+        foundPath.add(end);
         Node currentNode = end;
         
         while (!currentNode.equals(start)) {
-            shortestRoute.add(currentNode.getPreviousNode());
+            foundPath.add(currentNode.getPreviousNode());
             currentNode = currentNode.getPreviousNode();
         }
-        
-        return shortestRoute;
     }
     
     //move this functionality to Node class?
@@ -260,5 +266,15 @@ public class JPS implements Pathfinder {
         }
         
         return direction;
+    }
+
+    @Override
+    public int getPathLength() {
+        return foundPath.size();
+    }
+
+    @Override
+    public int getNumberOfNodesVisited() {
+        return visitedNodes.size();
     }
 }

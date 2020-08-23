@@ -3,8 +3,10 @@ package tiralab.pathfinding;
 import tiralab.pathfinding.domain.Maze;
 import java.awt.Color;
 import java.util.List;
+import javax.swing.JFrame;
 import tiralab.pathfinding.domain.Node;
 import tiralab.pathfinding.io.MyIO;
+import tiralab.pathfinding.ui.GUI;
 
 /**
  *
@@ -15,6 +17,11 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        
+        //First gui test
+        
+        JFrame gui = new GUI();
+        gui.setVisible(true);
         
         //test using cave1
 //        int[][] pixelArray = MyIO.readFromFile("src/mazes/cave1.png");
@@ -31,11 +38,11 @@ public class Main {
 //        Node end = maze.getNodeAtPosition(8, 8);
         
         //test using maze1
-        int[][] pixelArray = MyIO.readFromFile("src/mazes/maze1.png");
-        Maze maze = new Maze(pixelArray, pixelArray.length, pixelArray[0].length);
-        maze.generateNodes();
-        Node start = maze.getNodeAtPosition(484, 48);
-        Node end = maze.getNodeAtPosition(19, 1001);
+//        int[][] pixelArray = MyIO.readFromFile("src/mazes/maze1.png");
+//        Maze maze = new Maze(pixelArray, pixelArray.length, pixelArray[0].length);
+//        maze.generateNodes();
+//        Node start = maze.getNodeAtPosition(484, 48);
+//        Node end = maze.getNodeAtPosition(19, 1001);
        
         //test using debug1
 //        int[][] pixelArray = MyIO.readFromFile("src/mazes/debug1.png");
@@ -58,19 +65,19 @@ public class Main {
 //        Node start = maze.getNodeAtPosition(1,1);
 //        Node end = maze.getNodeAtPosition(2, 7);
         
-        Astar algo = new Astar(new Heuristic(""));
-        algo.run(maze, start, end);
-        
-//        JPS algo = new JPS();
+//        Astar algo = new Astar(new Heuristic(""));
 //        algo.run(maze, start, end);
-        
-        List<Node> path = algo.getShortestRoute(start, end);
-        
-        //add found path to pixelsArray
-        
-        int[][] newPixels = drawPath(pixelArray, path);
-        
-        MyIO.writeToFile(newPixels, "png", "paths/FoundPath.png");
+//        
+////        JPS algo = new JPS();
+////        algo.run(maze, start, end);
+//        
+//        List<Node> path = algo.getShortestRoute(start, end);
+//        
+//        //add found path to pixelsArray
+//        
+//        int[][] newPixels = drawPath(pixelArray, path);
+//        
+//        MyIO.writeToFile(newPixels, "png", "paths/FoundPath.png");
     }
     
     //move this to Maze...?

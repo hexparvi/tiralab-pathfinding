@@ -17,6 +17,7 @@ public class Astar implements Pathfinder {
     private MinHeap unvisitedNodes = new MinHeap(500);
     private Set<String> visitedNodes = new HashSet<>();
     private Heuristic heuristic;
+    private List<Node> foundPath;
     
     public Astar(Heuristic heuristic) {
         this.heuristic = heuristic;
@@ -49,6 +50,8 @@ public class Astar implements Pathfinder {
             
             checkNeighbors(maze, currentNode, end);
         }
+        
+        checkPath(start, end);
     }
     
     //TODO: return stack instead for 'correct' ordering?
@@ -62,18 +65,20 @@ public class Astar implements Pathfinder {
      * @return all nodes on the shortest path between start and end
      */
     @Override
-    public ArrayList<Node> getShortestRoute(Node start, Node end) {
-        ArrayList<Node> shortestRoute = new ArrayList<>();
+    public List<Node> getShortestRoute(Node start, Node end) {
+        return foundPath;
+    }
+    
+    private void checkPath(Node start, Node end) {
+        this.foundPath = new ArrayList<>();
         
-        shortestRoute.add(end);
+        foundPath.add(end);
         Node currentNode = end;
         
         while (!currentNode.equals(start)) {
-            shortestRoute.add(currentNode.getPreviousNode());
+            foundPath.add(currentNode.getPreviousNode());
             currentNode = currentNode.getPreviousNode();
         }
-        
-        return shortestRoute;
     }
     
     private void checkNeighbors(Maze maze, Node parent, Node target) {
@@ -109,5 +114,15 @@ public class Astar implements Pathfinder {
 
     public void setHeuristic(Heuristic heuristic) {
         this.heuristic = heuristic;
+    }
+
+    @Override
+    public int getPathLength() {
+        return foundPath.size();
+    }
+
+    @Override
+    public int getNumberOfNodesVisited() {
+        return visitedNodes.size();
     }
 }
