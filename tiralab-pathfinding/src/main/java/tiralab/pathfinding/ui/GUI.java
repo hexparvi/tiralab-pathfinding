@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.util.List;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -17,6 +18,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import tiralab.pathfinding.Astar;
 import tiralab.pathfinding.Heuristic;
 import tiralab.pathfinding.JPS;
@@ -37,10 +39,10 @@ public class GUI extends JFrame {
     private JRadioButton maze = new JRadioButton("Maze");
     private JRadioButton cave = new JRadioButton("Cave");
     
-    private JTextArea startXCoord = new JTextArea(2, 3);
-    private JTextArea startYCoord = new JTextArea(2, 3);
-    private JTextArea endXCoord = new JTextArea(2, 3);
-    private JTextArea endYCoord = new JTextArea(2, 3);
+    private JTextField startXCoord = new JTextField(4);
+    private JTextField startYCoord = new JTextField(4);
+    private JTextField endXCoord = new JTextField(4);
+    private JTextField endYCoord = new JTextField(4);
     
     private JLabel mapImg = new JLabel();
     private JLabel timeLabel = new JLabel("Time spent: ");
@@ -83,7 +85,7 @@ public class GUI extends JFrame {
         topPanel.setLayout(topLayout);
         
         //top panel setup
-        BufferedImage img = MyIO.getBufferedImage("src/mazes/maze1.png");
+        BufferedImage img = MyIO.getBufferedImageFromFilepath("src/mazes/maze1.png");
         mapImg.setIcon(new ImageIcon(img));
         
         mapImg.addMouseListener(new CoordinateListener());
@@ -103,13 +105,17 @@ public class GUI extends JFrame {
         
         JLabel mapLabel = new JLabel("Select map:");
         ButtonGroup mapGroup = new ButtonGroup();
+        maze.addActionListener(new MapSelectionListener());
+        cave.addActionListener(new MapSelectionListener());
         mapGroup.add(maze);
         mapGroup.add(cave);
         
-        JLabel coordLabel = new JLabel("Start & end coordinates:");
-        coordPanel.add(coordLabel);
+        JLabel coordLabel1 = new JLabel("Start:");
+        JLabel coordLabel2 = new JLabel("End:");
+        coordPanel.add(coordLabel1);
         coordPanel.add(startXCoord);
         coordPanel.add(startYCoord);
+        coordPanel.add(coordLabel2);
         coordPanel.add(endXCoord);
         coordPanel.add(endYCoord);
         
@@ -135,11 +141,27 @@ public class GUI extends JFrame {
         add(bottomPanel, BorderLayout.PAGE_END);
     }
     
+    class MapSelectionListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (maze.isSelected()) {
+                BufferedImage newMapImg = MyIO.getBufferedImageFromFilepath("src/mazes/maze1.png");
+                mapImg.setIcon(new ImageIcon(newMapImg));
+                
+            } else {
+                BufferedImage newMapImg = MyIO.getBufferedImageFromFilepath("src/mazes/cave1.png");
+                mapImg.setIcon(new ImageIcon(newMapImg));
+            }
+        }
+        
+    }
+    
     class RunListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        Maze map = new Maze(new int[1][1], 1, 1);
+        Maze map;
         Node start = new Node("");
         Node end = new Node("");
         
@@ -181,6 +203,34 @@ public class GUI extends JFrame {
         timeLabel.setText("Time spent: " + runTime + " ms");
         nodeLabel.setText("Nodes visited: " + pathfinder.getNumberOfNodesVisited());
         pathLabel.setText("Path length: " + pathfinder.getPathLength());
+        
+        int[][] newMap = drawPath(map, pathfinder.getPath());
+        BufferedImage newMapImg = MyIO.getBufferedImageFromPixels(newMap);
+        mapImg.setIcon(new ImageIcon(newMapImg));
+    }
+    
+    private int[][] drawPath(Maze maze, List<Node> path) {
+        int[][] pixelArray = maze.getPixels();
+        Node previousNode = null;
+        for (Node node : path) {
+            if (previousNode != null) {
+                int[] direction = maze.direction(previousNode, node);
+                int x = previousNode.getX();
+                int y = previousNode.getY();
+                int dx = direction[0];
+                int dy = direction[1];
+                
+                while (x != node.getX() || y != node.getY()) {
+                    pixelArray[x][y] = Color.RED.getRGB();
+                    x = x + dx;
+                    y = y + dy;
+                }
+            }
+            
+            previousNode = node;
+        }
+        
+        return pixelArray;
     }
     
 }

@@ -44,7 +44,7 @@ public class MyIO {
         }
     }
     
-    public static BufferedImage getBufferedImage(String filepath) {
+    public static BufferedImage getBufferedImageFromFilepath(String filepath) {
         BufferedImage image = null;
         File inputFile = null;
         
@@ -57,6 +57,20 @@ public class MyIO {
         }
         
         return image;
+    }
+    
+    public static BufferedImage getBufferedImageFromPixels(int[][] pixelArray) {
+        int width = pixelArray.length;
+        int height = pixelArray[0].length;
+        BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                img.setRGB(x, y, pixelArray[x][y]);
+            }
+        }
+        
+        return img;
     }
     
     private static int[][] convertToPixelArray(BufferedImage img) {

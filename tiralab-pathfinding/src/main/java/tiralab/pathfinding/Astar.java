@@ -117,6 +117,11 @@ public class Astar implements Pathfinder {
     }
 
     @Override
+    public List<Node> getPath() {
+        return foundPath;
+    }
+    
+    @Override
     public int getPathLength() {
         return foundPath.size();
     }

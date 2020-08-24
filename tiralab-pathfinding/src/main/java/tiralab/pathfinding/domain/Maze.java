@@ -83,6 +83,22 @@ public class Maze {
         //TODO
     }
     
+    public int[] direction(Node from, Node to) {
+        int dx = to.getX() - from.getX();
+        int dy = to.getY() - from.getY();
+        int[] direction = {0, 0};
+        
+        if (dx != 0) {
+            direction[0] = dx/Math.abs(dx);
+        }
+        
+        if (dy != 0) {
+            direction[1] = dy/Math.abs(dy);
+        }
+        
+        return direction;
+    }
+    
     private boolean pointIsWithinMazeBounds(int x, int y) {
         return ((x >= 0 && x < width) && (y >= 0 && y < height));
     }

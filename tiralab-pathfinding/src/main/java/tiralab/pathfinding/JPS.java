@@ -267,6 +267,11 @@ public class JPS implements Pathfinder {
         
         return direction;
     }
+    
+    @Override
+    public List<Node> getPath() {
+        return foundPath;
+    }
 
     @Override
     public int getPathLength() {
