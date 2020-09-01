@@ -59,6 +59,7 @@ public class MinHeap {
         }
     }
     
+    //fix this!
     private void heapifyDown() {
         int index = 0;
         Node item = heap[index];

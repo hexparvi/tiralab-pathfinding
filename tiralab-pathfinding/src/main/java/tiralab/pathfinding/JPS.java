@@ -13,7 +13,9 @@ import tiralab.pathfinding.domain.Node;
  */
 public class JPS implements Pathfinder {
     private PriorityQueue<Node> unvisitedNodes = new PriorityQueue<>();
-    private Set<String> visitedNodes = new HashSet<>();
+//    private Set<String> visitedNodes = new HashSet<>();
+    private boolean[][] visitedNodes;
+    private int visitedNodesNumber = 0;
     private Heuristic heuristic = new Heuristic("euclidean");
     private List<Node> foundPath;
     
@@ -25,7 +27,7 @@ public class JPS implements Pathfinder {
      */
     @Override
     public void run(Maze maze, Node start, Node end) {
-        
+        this.visitedNodes = new boolean[maze.getWidth()][maze.getHeight()];
         start.setShortestDistance(0);
         unvisitedNodes.add(start);
         Node previousNode = null;
@@ -35,9 +37,14 @@ public class JPS implements Pathfinder {
             previousNode = currentNode.getPreviousNode();
             
             if (currentNode.equals(end)) break;
-            if (visitedNodes.contains(currentNode.getName())) continue;
+            if (visitedNodes[currentNode.getX()][currentNode.getY()] == true) {
+                continue;
+            }
+//            if (visitedNodes.contains(currentNode.getName())) continue;
             
-            visitedNodes.add(currentNode.getName());
+            visitedNodes[currentNode.getX()][currentNode.getY()] = true;
+            visitedNodesNumber++;
+//            visitedNodes.add(currentNode.getName());
             
             checkSuccessors(currentNode, successors(currentNode, previousNode, maze, end));
         }
@@ -47,7 +54,10 @@ public class JPS implements Pathfinder {
     
     private void checkSuccessors(Node parent, List<Node> successors) {
         for (Node successor : successors) {
-            if (this.visitedNodes.contains(successor.getName())) continue;
+//            if (this.visitedNodes.contains(successor.getName())) continue;
+            if (visitedNodes[successor.getX()][successor.getY()] == true) {
+                continue;
+            }
             
             double currentDistance = parent.getShortestDistance() 
                    + distanceToNode(successor) + heuristic.estimateCost(parent, successor);
@@ -280,6 +290,6 @@ public class JPS implements Pathfinder {
 
     @Override
     public int getNumberOfNodesVisited() {
-        return visitedNodes.size();
+        return visitedNodesNumber;
     }
 }

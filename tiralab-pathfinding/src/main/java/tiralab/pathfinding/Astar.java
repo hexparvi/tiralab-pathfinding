@@ -1,10 +1,7 @@
 package tiralab.pathfinding;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Set;
 import tiralab.pathfinding.domain.Maze;
 import tiralab.pathfinding.domain.Node;
 import tiralab.pathfinding.util.MinHeap;
@@ -14,8 +11,10 @@ import tiralab.pathfinding.util.MinHeap;
  */
 public class Astar implements Pathfinder {
     //private PriorityQueue<Node> unvisitedNodes = new PriorityQueue<>();
-    private MinHeap unvisitedNodes = new MinHeap(500);
-    private Set<String> visitedNodes = new HashSet<>();
+    private MinHeap unvisitedNodes = new MinHeap(256);
+    //private Set<String> visitedNodes = new HashSet<>();
+    private boolean[][] visitedNodes;
+    private int visitedNodesNumber = 0;
     private Heuristic heuristic;
     private List<Node> foundPath;
     
@@ -32,6 +31,7 @@ public class Astar implements Pathfinder {
      */
     @Override
     public void run(Maze maze, Node start, Node end) {
+        this.visitedNodes = new boolean[maze.getWidth()][maze.getHeight()];
         start.setShortestDistance(0);
         unvisitedNodes.add(start);
         
@@ -42,15 +42,25 @@ public class Astar implements Pathfinder {
                 break;
             }
             
-            if (visitedNodes.contains(currentNode.getName())) {
+//            System.out.println("Checking if list contains visited node");
+//            if (visitedNodes.contains(currentNode.getName())) {
+//                continue;
+//            }
+            
+            if (visitedNodes[currentNode.getX()][currentNode.getY()] == true) {
                 continue;
             }
             
-            visitedNodes.add(currentNode.getName());
+            visitedNodes[currentNode.getX()][currentNode.getY()] = true;
+            visitedNodesNumber++;
+
+            System.out.println("Adding visited node");
+//            visitedNodes.add(currentNode.getName());
             
             checkNeighbors(maze, currentNode, end);
         }
         
+        System.out.println("***Checking path");
         checkPath(start, end);
     }
     
@@ -85,9 +95,12 @@ public class Astar implements Pathfinder {
         List<Node> neighbors = maze.findNeighborsOfNode(parent);
         
         for (Node neighbor : neighbors) {
-            if (this.visitedNodes.contains(neighbor.getName())) {
+            if (this.visitedNodes[neighbor.getX()][neighbor.getY()] == true) {
                 continue;
             }
+//            if (this.visitedNodes.contains(neighbor.getName())) {
+//                continue;
+//            }
             
 //            double currentDistance = parent.getShortestDistance() 
 //                    + distanceToNode(neighbor) + heuristic.estimateCost(neighbor, target);
@@ -128,6 +141,7 @@ public class Astar implements Pathfinder {
 
     @Override
     public int getNumberOfNodesVisited() {
-        return visitedNodes.size();
+//        return visitedNodes.size();
+          return visitedNodesNumber;
     }
 }

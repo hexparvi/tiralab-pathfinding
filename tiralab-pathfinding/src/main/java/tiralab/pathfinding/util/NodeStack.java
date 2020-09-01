@@ -22,7 +22,7 @@ public class NodeStack {
     }
     
     public void push(Node node) {
-        if (this.size >= capacity - 1) extend();
+        if (this.size >= capacity) extend();
         stack[size] = node;
         size++;
     }

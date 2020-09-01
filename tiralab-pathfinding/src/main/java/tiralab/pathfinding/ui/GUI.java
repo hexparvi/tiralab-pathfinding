@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.WindowConstants;
 import tiralab.pathfinding.Astar;
 import tiralab.pathfinding.Heuristic;
 import tiralab.pathfinding.JPS;
@@ -139,6 +140,8 @@ public class GUI extends JFrame {
         add(resultsPanel, BorderLayout.PAGE_START);
         add(topPanel, BorderLayout.CENTER);
         add(bottomPanel, BorderLayout.PAGE_END);
+        
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
     
     class MapSelectionListener implements ActionListener {
