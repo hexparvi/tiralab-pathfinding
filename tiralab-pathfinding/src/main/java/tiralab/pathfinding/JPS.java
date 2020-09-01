@@ -11,14 +11,12 @@ import tiralab.pathfinding.util.NodeStack;
  * 
  */
 public class JPS implements Pathfinder {
-//    private PriorityQueue<Node> unvisitedNodes = new PriorityQueue<>();
     private MinHeap unvisitedNodes = new MinHeap(256);
-//    private Set<String> visitedNodes = new HashSet<>();
     private boolean[][] visitedNodes;
     private int visitedNodesNumber = 0;
     private Heuristic heuristic = new Heuristic("euclidean");
-//    private List<Node> foundPath;
     private NodeStack foundPath;
+    private Maze currentMaze;
     
     /**
      * Run JPS on a given graph.
@@ -29,6 +27,8 @@ public class JPS implements Pathfinder {
     @Override
     public void run(Maze maze, Node start, Node end) {
         this.visitedNodes = new boolean[maze.getWidth()][maze.getHeight()];
+        this.currentMaze = maze;
+        
         start.setShortestDistance(0);
         unvisitedNodes.add(start);
         Node previousNode = null;
@@ -41,11 +41,9 @@ public class JPS implements Pathfinder {
             if (visitedNodes[currentNode.getX()][currentNode.getY()] == true) {
                 continue;
             }
-//            if (visitedNodes.contains(currentNode.getName())) continue;
             
             visitedNodes[currentNode.getX()][currentNode.getY()] = true;
             visitedNodesNumber++;
-//            visitedNodes.add(currentNode.getName());
             
             checkSuccessors(currentNode, successors(currentNode, previousNode, maze, end));
         }
@@ -55,7 +53,6 @@ public class JPS implements Pathfinder {
     
     private void checkSuccessors(Node parent, List<Node> successors) {
         for (Node successor : successors) {
-//            if (this.visitedNodes.contains(successor.getName())) continue;
             if (visitedNodes[successor.getX()][successor.getY()] == true) {
                 continue;
             }
@@ -232,21 +229,34 @@ public class JPS implements Pathfinder {
         return false;
     }
     
-    @Override
-    public NodeStack getShortestRoute(Node start, Node end) {
-        return foundPath;
-    }
-    
     // TODO: get intermediate nodes between jump points
+    /**
+     * Collects the path found by the algorithm into a NodeStack.
+     * @param start starting Node of the algorithm
+     * @param end ending Node of the algorithm
+     */
     private void checkPath(Node start, Node end) {
         this.foundPath = new NodeStack(256);
         
-//        foundPath.add(end);
         foundPath.push(end);
         Node currentNode = end;
         
         while (!currentNode.equals(start)) {
-//            foundPath.add(currentNode.getPreviousNode());
+//            int[] direction = currentMaze.direction(currentNode, currentNode.getPreviousNode());
+//            int previousX = currentNode.getPreviousNode().getX();
+//            int previousY = currentNode.getPreviousNode().getY();
+//            int dx = direction[0];
+//            int dy = direction[1];
+//            int x = currentNode.getX();
+//            int y = currentNode.getY();
+//            
+//            while (x != previousX && y != previousY) {
+//                foundPath.push(currentMaze.getNodeAtPosition(x, y));
+//                
+//                x = x + dx;
+//                y = y + dy;
+//            }
+            
             foundPath.push(currentNode.getPreviousNode());
             currentNode = currentNode.getPreviousNode();
         }

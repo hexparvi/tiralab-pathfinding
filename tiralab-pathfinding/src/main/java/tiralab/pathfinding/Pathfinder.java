@@ -11,7 +11,6 @@ import tiralab.pathfinding.util.NodeStack;
 public interface Pathfinder {
     
     public void run(Maze maze, Node start, Node end);
-    public NodeStack getShortestRoute(Node start, Node end);
     
     public NodeStack getPath();
     public int getPathLength();

@@ -93,6 +93,7 @@ public class Node implements Comparable<Node> {
         this.obstacle = obstacle;
     }
     
+    //TODO: proper double comparison
     @Override
     public int compareTo(Node o) {
         if (this.getShortestDistance () < o.getShortestDistance()) {
