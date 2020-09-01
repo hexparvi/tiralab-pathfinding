@@ -1,12 +1,11 @@
 package tiralab.pathfinding;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.PriorityQueue;
-import java.util.Set;
 import tiralab.pathfinding.domain.Maze;
 import tiralab.pathfinding.domain.Node;
+import tiralab.pathfinding.util.NodeStack;
 
 /**
  * 
@@ -17,7 +16,8 @@ public class JPS implements Pathfinder {
     private boolean[][] visitedNodes;
     private int visitedNodesNumber = 0;
     private Heuristic heuristic = new Heuristic("euclidean");
-    private List<Node> foundPath;
+//    private List<Node> foundPath;
+    private NodeStack foundPath;
     
     /**
      * Run JPS on a given graph.
@@ -231,21 +231,22 @@ public class JPS implements Pathfinder {
         return false;
     }
     
-    //copy-paste from Astar...
     @Override
-    public List<Node> getShortestRoute(Node start, Node end) {
+    public NodeStack getShortestRoute(Node start, Node end) {
         return foundPath;
     }
     
     // TODO: get intermediate nodes between jump points
     private void checkPath(Node start, Node end) {
-        this.foundPath = new ArrayList<>();
+        this.foundPath = new NodeStack(256);
         
-        foundPath.add(end);
+//        foundPath.add(end);
+        foundPath.push(end);
         Node currentNode = end;
         
         while (!currentNode.equals(start)) {
-            foundPath.add(currentNode.getPreviousNode());
+//            foundPath.add(currentNode.getPreviousNode());
+            foundPath.push(currentNode.getPreviousNode());
             currentNode = currentNode.getPreviousNode();
         }
     }
@@ -279,7 +280,7 @@ public class JPS implements Pathfinder {
     }
     
     @Override
-    public List<Node> getPath() {
+    public NodeStack getPath() {
         return foundPath;
     }
 

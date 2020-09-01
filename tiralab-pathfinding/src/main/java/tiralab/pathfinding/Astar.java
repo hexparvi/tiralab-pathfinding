@@ -5,6 +5,7 @@ import java.util.List;
 import tiralab.pathfinding.domain.Maze;
 import tiralab.pathfinding.domain.Node;
 import tiralab.pathfinding.util.MinHeap;
+import tiralab.pathfinding.util.NodeStack;
 
 /**
  * 
@@ -16,7 +17,8 @@ public class Astar implements Pathfinder {
     private boolean[][] visitedNodes;
     private int visitedNodesNumber = 0;
     private Heuristic heuristic;
-    private List<Node> foundPath;
+//    private List<Node> foundPath;
+    private NodeStack foundPath;
     
     public Astar(Heuristic heuristic) {
         this.heuristic = heuristic;
@@ -75,18 +77,20 @@ public class Astar implements Pathfinder {
      * @return all nodes on the shortest path between start and end
      */
     @Override
-    public List<Node> getShortestRoute(Node start, Node end) {
+    public NodeStack getShortestRoute(Node start, Node end) {
         return foundPath;
     }
     
     private void checkPath(Node start, Node end) {
-        this.foundPath = new ArrayList<>();
+        this.foundPath = new NodeStack(256);
         
-        foundPath.add(end);
+//        foundPath.add(end);
+        foundPath.push(end);
         Node currentNode = end;
         
         while (!currentNode.equals(start)) {
-            foundPath.add(currentNode.getPreviousNode());
+//            foundPath.add(currentNode.getPreviousNode());
+            foundPath.push(currentNode.getPreviousNode());
             currentNode = currentNode.getPreviousNode();
         }
     }
@@ -130,7 +134,7 @@ public class Astar implements Pathfinder {
     }
 
     @Override
-    public List<Node> getPath() {
+    public NodeStack getPath() {
         return foundPath;
     }
     

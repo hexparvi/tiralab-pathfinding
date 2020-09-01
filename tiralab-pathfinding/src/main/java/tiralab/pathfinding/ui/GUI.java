@@ -27,6 +27,7 @@ import tiralab.pathfinding.Pathfinder;
 import tiralab.pathfinding.domain.Maze;
 import tiralab.pathfinding.domain.Node;
 import tiralab.pathfinding.io.MyIO;
+import tiralab.pathfinding.util.NodeStack;
 
 /**
  *
@@ -212,10 +213,13 @@ public class GUI extends JFrame {
         mapImg.setIcon(new ImageIcon(newMapImg));
     }
     
-    private int[][] drawPath(Maze maze, List<Node> path) {
+    private int[][] drawPath(Maze maze, NodeStack path) {
         int[][] pixelArray = maze.getPixels();
         Node previousNode = null;
-        for (Node node : path) {
+        
+        while (path.size() > 0) {
+            Node node = path.pop();
+            
             if (previousNode != null) {
                 int[] direction = maze.direction(previousNode, node);
                 int x = previousNode.getX();

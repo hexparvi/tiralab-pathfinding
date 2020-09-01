@@ -37,6 +37,10 @@ public class NodeStack {
         return stack[size - 1];
     }
     
+    public int size() {
+        return size;
+    }
+    
     private void extend() {
         Node[] biggerStack = new Node[capacity * 2];
         System.arraycopy(stack, 0, biggerStack, 0, capacity);
