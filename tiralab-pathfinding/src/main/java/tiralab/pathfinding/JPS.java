@@ -2,16 +2,17 @@ package tiralab.pathfinding;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.PriorityQueue;
 import tiralab.pathfinding.domain.Maze;
 import tiralab.pathfinding.domain.Node;
+import tiralab.pathfinding.util.MinHeap;
 import tiralab.pathfinding.util.NodeStack;
 
 /**
  * 
  */
 public class JPS implements Pathfinder {
-    private PriorityQueue<Node> unvisitedNodes = new PriorityQueue<>();
+//    private PriorityQueue<Node> unvisitedNodes = new PriorityQueue<>();
+    private MinHeap unvisitedNodes = new MinHeap(256);
 //    private Set<String> visitedNodes = new HashSet<>();
     private boolean[][] visitedNodes;
     private int visitedNodesNumber = 0;
@@ -32,7 +33,7 @@ public class JPS implements Pathfinder {
         unvisitedNodes.add(start);
         Node previousNode = null;
         
-        while (!unvisitedNodes.isEmpty()) {
+        while (unvisitedNodes.size() != 0) {
             Node currentNode = unvisitedNodes.remove();
             previousNode = currentNode.getPreviousNode();
             
