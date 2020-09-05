@@ -9,15 +9,15 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.util.List;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JTextArea;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import tiralab.pathfinding.Astar;
@@ -27,6 +27,7 @@ import tiralab.pathfinding.Pathfinder;
 import tiralab.pathfinding.domain.Maze;
 import tiralab.pathfinding.domain.Node;
 import tiralab.pathfinding.io.MyIO;
+import tiralab.pathfinding.test.Test;
 import tiralab.pathfinding.util.NodeStack;
 
 /**
@@ -50,6 +51,10 @@ public class GUI extends JFrame {
     private JLabel timeLabel = new JLabel("Time spent: ");
     private JLabel nodeLabel = new JLabel("Nodes visited: ");
     private JLabel pathLabel = new JLabel("Path length: ");
+    
+    private JRadioButton testRun = new JRadioButton("Test");
+    private JRadioButton normalRun = new JRadioButton("Run");
+    private JComboBox times = new JComboBox(new Integer[]{10, 100});
     
     Pathfinder pathfinder;
     
@@ -136,6 +141,21 @@ public class GUI extends JFrame {
         setSize(400,500);
         runButton.addActionListener(new RunListener());
         
+        JPanel timesPanel = new JPanel();
+        JLabel timesLabel = new JLabel("Times: ");
+        timesPanel.add(timesLabel);
+        timesPanel.add(times);
+        JButton runTestsButton = new JButton("Run Tests");
+        runTestsButton.addActionListener(new RunListener());
+        
+        ButtonGroup runGroup = new ButtonGroup();
+        runGroup.add(normalRun);
+        runGroup.add(testRun);
+        normalRun.setSelected(true);
+        
+        runPanel.add(normalRun);
+        runPanel.add(testRun);
+        runPanel.add(timesPanel);
         runPanel.add(runButton);
         
         add(resultsPanel, BorderLayout.PAGE_START);
@@ -199,7 +219,16 @@ public class GUI extends JFrame {
                     Integer.parseInt(endYCoord.getText()));
         }
         
-        long startTime = System.nanoTime();
+        if (normalRun.isSelected()) {
+            runAlgo(map, start, end);
+            
+        } else if (testRun.isSelected()) {
+            runTests(map, start, end);
+        }
+    }
+    
+    private void runAlgo(Maze map, Node start, Node end) {
+         long startTime = System.nanoTime();
         pathfinder.run(map, start, end);
         long endTime = System.nanoTime();
         long runTime = (endTime - startTime) / 1000000 ;
@@ -211,6 +240,17 @@ public class GUI extends JFrame {
         int[][] newMap = drawPath(map, pathfinder.getPath());
         BufferedImage newMapImg = MyIO.getBufferedImageFromPixels(newMap);
         mapImg.setIcon(new ImageIcon(newMapImg));
+    }
+    
+    private void runTests(Maze map, Node start, Node end) {
+        int testRuns = (int) times.getSelectedItem();
+        
+        long[] results = Test.runTests2(testRuns, map, start, end);
+        
+        timeLabel.setText("Time spent: Dijkstra " + results[0] + " ms, A* " 
+                + results[1] + " ms, JPS " + results[2] + " ms.");
+        nodeLabel.setText("Nodes visited: N/A");
+        pathLabel.setText("Path length: N/A");
     }
     
     private int[][] drawPath(Maze maze, NodeStack path) {

@@ -11,7 +11,7 @@ import tiralab.pathfinding.util.NodeStack;
  * 
  */
 public class JPS implements Pathfinder {
-    private MinHeap unvisitedNodes = new MinHeap(256);
+    private MinHeap unvisitedNodes;
     private boolean[][] visitedNodes;
     private int visitedNodesNumber = 0;
     private Heuristic heuristic = new Heuristic("euclidean");
@@ -27,6 +27,7 @@ public class JPS implements Pathfinder {
     @Override
     public void run(Maze maze, Node start, Node end) {
         this.visitedNodes = new boolean[maze.getWidth()][maze.getHeight()];
+        this.unvisitedNodes = new MinHeap(256);
         this.currentMaze = maze;
         
         start.setShortestDistance(0);
@@ -37,7 +38,9 @@ public class JPS implements Pathfinder {
             Node currentNode = unvisitedNodes.remove();
             previousNode = currentNode.getPreviousNode();
             
-            if (currentNode.equals(end)) break;
+            if (currentNode.equals(end)) {
+                break;
+            }
             if (visitedNodes[currentNode.getX()][currentNode.getY()] == true) {
                 continue;
             }

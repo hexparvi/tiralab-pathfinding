@@ -10,7 +10,7 @@ import tiralab.pathfinding.util.NodeStack;
  * A* (and Dijkstra) implementation.
  */
 public class Astar implements Pathfinder {
-    private MinHeap unvisitedNodes = new MinHeap(256);
+    private MinHeap unvisitedNodes;
     private boolean[][] visitedNodes;
     private int visitedNodesNumber = 0;
     private Heuristic heuristic;
@@ -29,6 +29,7 @@ public class Astar implements Pathfinder {
     @Override
     public void run(Maze maze, Node start, Node end) {
         this.visitedNodes = new boolean[maze.getWidth()][maze.getHeight()];
+        this.unvisitedNodes = new MinHeap(256);
         start.setShortestDistance(0);
         unvisitedNodes.add(start);
         
@@ -77,10 +78,10 @@ public class Astar implements Pathfinder {
                 continue;
             }
             
-//            double currentDistance = parent.getShortestDistance() 
-//                    + distanceToNode(neighbor) + heuristic.estimateCost(neighbor, target);
             double currentDistance = parent.getShortestDistance() 
-                    + 0.1 + heuristic.estimateCost(neighbor, target);
+                    + distanceToNode(neighbor) + heuristic.estimateCost(neighbor, target);
+//            double currentDistance = parent.getShortestDistance() 
+//                    + 0.1 + heuristic.estimateCost(neighbor, target);
             
             if (!neighbor.isObstacle() && currentDistance < neighbor.getShortestDistance()) {
                 neighbor.setShortestDistance(currentDistance);

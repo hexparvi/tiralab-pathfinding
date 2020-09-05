@@ -6,6 +6,7 @@ import java.util.List;
 import javax.swing.JFrame;
 import tiralab.pathfinding.domain.Node;
 import tiralab.pathfinding.io.MyIO;
+import tiralab.pathfinding.test.Test;
 import tiralab.pathfinding.ui.GUI;
 
 /**
@@ -22,6 +23,8 @@ public class Main {
         
         JFrame gui = new GUI();
         gui.setVisible(true);
+        
+//        Test.runTests();
         
         //test using cave1
 //        int[][] pixelArray = MyIO.readFromFile("src/mazes/cave1.png");

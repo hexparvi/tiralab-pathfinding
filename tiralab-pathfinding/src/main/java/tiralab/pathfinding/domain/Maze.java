@@ -79,10 +79,6 @@ public class Maze {
         return neighbors;
     }
     
-    public void getRandomAccessibleNode() {
-        //TODO
-    }
-    
     public int[] direction(Node from, Node to) {
         int dx = to.getX() - from.getX();
         int dy = to.getY() - from.getY();

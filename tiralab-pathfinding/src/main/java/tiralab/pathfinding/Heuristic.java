@@ -6,8 +6,6 @@ import tiralab.pathfinding.domain.Node;
  * Heuristic for use in A*
  */
 public class Heuristic {
-    
-    //use int instead? or enum..?
     private String name;
     
     public Heuristic(String heuristicName) {
@@ -38,7 +36,6 @@ public class Heuristic {
         return Math.sqrt((dx * dx) + (dy * dy));
     }
     
-    //replace Math.abs?
     private double manhattan(Node current, Node target) {
         return Math.abs(current.getX() - target.getX()) + Math.abs(current.getY() - target.getY());
     }
