@@ -12,15 +12,21 @@
 
 **Pathfinder:** algoritmien rajapinta
 
+---
+
 .domain - sisältää karttojen esittämiseen ja käsittelyyn tarvittavat luokat
 
 **Node:** kuvaa yksittäistä verkon solmua (ts. yksittäistä pikseliä .png-tiedostossa)
 
 **Maze:** kuvaa karttaa kaksiulotteisena Node-arrayna
 
+---
+
 .ui - sisältää graafisen käyttöliittymän
 
 **GUI:** ohjelman graafinen käyttöliittymä, josta ohjelma ja tehokkuustestit suoritetaan. Hoitaa myös polun piirtämisen kartalle
+
+---
 
 .util - sisältää algoritmien käyttämien tietorakenteiden toteutukset
 
@@ -28,9 +34,13 @@
 
 **NodeStack:** Nodeista koostuva pino
 
+---
+
 .test - sisältää tehokkuustestauksessa käytettävän Test-luokan
 
 **Test:** sisältää tehokkuustesteissä käytetyn logiikan
+
+---
 
 .io - sisältää .png-muotoisten karttojen lukuun ja kirjoitukseen tarvittavan MyIO-luokan
 
