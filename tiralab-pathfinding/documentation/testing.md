@@ -33,4 +33,6 @@ ero on sen verran suuri että epäilen vähän toteutukseni toimivuutta. Perimm�
 
 ### Yksikkötestit
 
-Yksikkötestit on toteutettu JUnitilla. Omia tietorakenteita (keko ja pino) sekä karttojen käsittelyyn käytettyjä luokkia Maze ja Node on testattu. GUI- ja MyIO-luokat on tarkoituksella jätetty testauksen ulkopuolelle.
+Yksikkötestit on toteutettu JUnitilla. Omia tietorakenteita (keko ja pino) sekä karttojen käsittelyyn käytettyjä luokkia Maze ja Node on testattu. GUI-, Test- ja MyIO-luokat on tarkoituksella jätetty testauksen ulkopuolelle. Itse algoritmeja ei ole juuri yksikkötestattu, sillä en keksinyt mitä muuta kuin löydetyn polun pituutta voi luotettavasti testata automaattisesti. Kartalta löydetyn polun testaus tyssäsi siihen, kun kartalta väistämättä löytyi useampi mahdollinen lyhyin polku.
+
+![Testikattavuusraportti](https://i.imgur.com/vnCXpjZ.png)
