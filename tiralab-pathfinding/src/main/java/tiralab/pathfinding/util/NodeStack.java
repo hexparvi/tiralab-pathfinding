@@ -25,7 +25,9 @@ public class NodeStack {
      * @param node Node to be pushed onto stack
      */
     public void push(Node node) {
-        if (this.size >= capacity) extend();
+        if (this.size >= capacity) {
+            extend();
+        }
         stack[size] = node;
         size++;
     }

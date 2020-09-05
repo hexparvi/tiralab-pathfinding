@@ -1,14 +1,12 @@
 package tiralab.pathfinding;
 
-import java.util.ArrayList;
-import java.util.List;
 import tiralab.pathfinding.domain.Maze;
 import tiralab.pathfinding.domain.Node;
 import tiralab.pathfinding.util.MinHeap;
 import tiralab.pathfinding.util.NodeStack;
 
 /**
- * 
+ * JPS implementation.
  */
 public class JPS implements Pathfinder {
     private MinHeap unvisitedNodes;
@@ -41,6 +39,7 @@ public class JPS implements Pathfinder {
             if (currentNode.equals(end)) {
                 break;
             }
+            
             if (visitedNodes[currentNode.getX()][currentNode.getY()] == true) {
                 continue;
             }
@@ -54,17 +53,17 @@ public class JPS implements Pathfinder {
         checkPath(start, end);
     }
     
-    private void checkSuccessors(Node parent, List<Node> successors) {
-        for (Node successor : successors) {
+    private void checkSuccessors(Node parent, NodeStack successors) {
+        while (successors.size() > 0) {
+            Node successor = successors.pop();
+            
             if (visitedNodes[successor.getX()][successor.getY()] == true) {
                 continue;
             }
             
-//            double currentDistance = parent.getShortestDistance() 
-//                   + distanceToNode(successor) + heuristic.estimateCost(parent, successor);
-            
             double currentDistance = parent.getShortestDistance() 
-                   + currentMaze.distanceBetweenNodes(parent, successor) + heuristic.estimateCost(parent, successor);
+                   + currentMaze.distanceBetweenNodes(parent, successor) 
+                   + heuristic.estimateCost(parent, successor);
             
             if (currentDistance <= successor.getShortestDistance()) {
                 successor.setShortestDistance(currentDistance);
@@ -82,15 +81,18 @@ public class JPS implements Pathfinder {
      * @param end target node of JPS
      * @return list of successor nodes
      */
-    private List<Node> successors(Node current, Node parent, Maze maze, Node end) {
-        if (parent == null) return maze.findNeighborsOfNode(current);
+    private NodeStack successors(Node current, Node parent, Maze maze, Node end) {
+        if (parent == null) {
+            return maze.findNeighborsOfNode(current);
+        }
         
-        List<Node> successors = new ArrayList<>();
-        List<Node> prunedNeighbors = pruneNeighbors(parent, current, maze);
+        NodeStack successors = new NodeStack(10);
+        NodeStack prunedNeighbors = pruneNeighbors(parent, current, maze);
         
-        for (Node neighbor : prunedNeighbors) {
+        while (prunedNeighbors.size() > 0) {
+            Node neighbor = prunedNeighbors.pop();
             Node successor = jump(current, neighbor.getX(), neighbor.getY(), maze, end);
-            if (successor != null) successors.add(successor);
+            if (successor != null) successors.push(successor);
         }
         
         return successors;
@@ -106,12 +108,19 @@ public class JPS implements Pathfinder {
      * @return found jump point, null if no jump point is found
      */
     private Node jump(Node jumpedFrom, int jumpX, int jumpY, Maze maze, Node end) {
-        if (!maze.isWalkable(jumpX, jumpY)) return null;
+        if (!maze.isWalkable(jumpX, jumpY)) {
+            return null;
+        }
         
         Node jumpedTo = maze.getNodeAtPosition(jumpX, jumpY);
         
-        if (jumpedTo.equals(end)) return jumpedTo;
-        if (hasForcedNeighbors(jumpedTo, jumpedFrom, maze)) return jumpedTo;
+        if (jumpedTo.equals(end)) {
+            return jumpedTo;
+        }
+        
+        if (hasForcedNeighbors(jumpedTo, jumpedFrom, maze)) {
+            return jumpedTo;
+        }
         
         int[] direction = direction(jumpedFrom, jumpedTo);
         int dx = direction[0];
@@ -132,8 +141,8 @@ public class JPS implements Pathfinder {
      * @param maze maze containing current node and the parent
      * @return list of node's natural and forced neighbors
      */
-    private List<Node> pruneNeighbors(Node parent, Node current, Maze maze) {
-        List<Node> prunedNeighbors = new ArrayList<>();
+    private NodeStack pruneNeighbors(Node parent, Node current, Maze maze) {
+        NodeStack prunedNeighbors = new NodeStack(10);
         
         int[] direction = direction(parent, current);
         int dx = direction[0];
@@ -141,51 +150,51 @@ public class JPS implements Pathfinder {
         
         if (dx != 0 && dy != 0) {
             if (maze.isWalkable(current.getX() + dx, current.getY() + dy)) {
-                prunedNeighbors.add(maze.getNodeAtPosition(current.getX() + dx, current.getY() + dy));
+                prunedNeighbors.push(maze.getNodeAtPosition(current.getX() + dx, current.getY() + dy));
             }
             if (maze.isWalkable(current.getX(), current.getY() + dy)) {
-                prunedNeighbors.add(maze.getNodeAtPosition(current.getX(), current.getY() + dy));
+                prunedNeighbors.push(maze.getNodeAtPosition(current.getX(), current.getY() + dy));
             }
             if (maze.isWalkable(current.getX() + dx, current.getY())) {
-                prunedNeighbors.add(maze.getNodeAtPosition(current.getX() + dx, current.getY()));
+                prunedNeighbors.push(maze.getNodeAtPosition(current.getX() + dx, current.getY()));
             }
             if (!maze.isWalkable(current.getX() - dx, current.getY()) 
                     && maze.isWalkable(current.getX() - dx,  current.getY() + dy)) {
-                prunedNeighbors.add(maze.getNodeAtPosition(current.getX() - dx,  current.getY() + dy));
+                prunedNeighbors.push(maze.getNodeAtPosition(current.getX() - dx,  current.getY() + dy));
             }
             if (!maze.isWalkable(current.getX(), current.getY() - dy) 
                     && maze.isWalkable(current.getX() + dx, current.getY() - dy)) {
-                prunedNeighbors.add(maze.getNodeAtPosition(current.getX() + dx, current.getY() - dy));
+                prunedNeighbors.push(maze.getNodeAtPosition(current.getX() + dx, current.getY() - dy));
             }
             
         } else if (dx != 0) {
             if (maze.isWalkable(current.getX() + dx, current.getY())) {
-                prunedNeighbors.add(maze.getNodeAtPosition(current.getX() + dx, current.getY()));
+                prunedNeighbors.push(maze.getNodeAtPosition(current.getX() + dx, current.getY()));
             }
             
             if (!maze.isWalkable(current.getX(), current.getY() + 1) 
                     && maze.isWalkable(current.getX() + dx, current.getY() + 1)) {
-                prunedNeighbors.add(maze.getNodeAtPosition(current.getX() + dx, current.getY() + 1));
+                prunedNeighbors.push(maze.getNodeAtPosition(current.getX() + dx, current.getY() + 1));
             }
             
             if (!maze.isWalkable(current.getX(), current.getY() - 1) 
                     && maze.isWalkable(current.getX() + dx, current.getY() - 1)) {
-                prunedNeighbors.add(maze.getNodeAtPosition(current.getX() + dx, current.getY() - 1));
+                prunedNeighbors.push(maze.getNodeAtPosition(current.getX() + dx, current.getY() - 1));
             }
             
         } else if (dy != 0) {
             if (maze.isWalkable(current.getX(), current.getY() + dy)) {
-                prunedNeighbors.add(maze.getNodeAtPosition(current.getX(), current.getY() + dy));
+                prunedNeighbors.push(maze.getNodeAtPosition(current.getX(), current.getY() + dy));
             }
             
             if (!maze.isWalkable(current.getX() - 1, current.getY()) 
                     && maze.isWalkable(current.getX() - 1, current.getY() + dy)) {
-                prunedNeighbors.add(maze.getNodeAtPosition(current.getX() - 1, current.getY() + dy));
+                prunedNeighbors.push(maze.getNodeAtPosition(current.getX() - 1, current.getY() + dy));
             }
             
             if (!maze.isWalkable(current.getX() + 1, current.getY()) 
                     && maze.isWalkable(current.getX() + 1, current.getY() + dy)) {
-                prunedNeighbors.add(maze.getNodeAtPosition(current.getX() + 1, current.getY() + dy));
+                prunedNeighbors.push(maze.getNodeAtPosition(current.getX() + 1, current.getY() + dy));
             }
         }
         
@@ -235,7 +244,6 @@ public class JPS implements Pathfinder {
         return false;
     }
     
-    // TODO: get intermediate nodes between jump points
     /**
      * Collects the path found by the algorithm into a NodeStack.
      * @param start starting Node of the algorithm
@@ -270,20 +278,15 @@ public class JPS implements Pathfinder {
         }
     }
     
-    //move this functionality to Node class?
-    private double distanceToNode(Node node) {
-        if (node.isObstacle()) return Double.MAX_VALUE / 2;
-        else return 0.0;
-    }
-    
     private double distanceBetweenNodes(Node from, Node to) {
         double dx = from.getX() - to.getX();
         double dy = from.getY() - to.getY();
         
         if (to.isObstacle()) { 
             return Double.MAX_VALUE / 2;
+        } else {
+            return Math.sqrt((dx * dx) + (dy * dy));
         }
-        else return Math.sqrt((dx * dx) + (dy * dy));
     }
     
     /**

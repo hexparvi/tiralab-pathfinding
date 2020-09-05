@@ -3,11 +3,15 @@ package tiralab.pathfinding;
 import tiralab.pathfinding.domain.Node;
 
 /**
- * Heuristic for use in A*
+ * Heuristic for use in A*.
  */
 public class Heuristic {
     private String name;
     
+    /**
+     * 
+     * @param heuristicName use "euclidean" for euclidean distance, "" for no heuristic
+     */
     public Heuristic(String heuristicName) {
         this.name = heuristicName;
     }

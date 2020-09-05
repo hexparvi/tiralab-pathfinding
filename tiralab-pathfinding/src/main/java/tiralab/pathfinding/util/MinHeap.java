@@ -21,7 +21,9 @@ public class MinHeap {
      * @param item Node to be added
      */
     public void add(Node item) {
-        if (isFull()) extend();
+        if (isFull()) {
+            extend();
+        }
         heap[size] = item;
         heapifyUp(size);
         size++;
@@ -71,7 +73,6 @@ public class MinHeap {
         }
     }
     
-    //fix this!
     /**
      * Heapifies the heap after removing a Node by moving the last Node
      * in the heap to the top and moving it down until heap condition is restored.
@@ -130,7 +131,6 @@ public class MinHeap {
         return 2 * (index + 1);
     }
     
-    //what do if no children?
     /**
      * Returns the index of the minimum child of a given Node.
      * @param index index of a Node on the heap
@@ -158,12 +158,5 @@ public class MinHeap {
         Node tmp = heap[x];
         heap[x] = heap[y];
         heap[y] = tmp;
-    }
-    
-    private void printHeap() {
-        for (int i = 0; i < size; i++) {
-            System.out.print(heap[i].getName() + " / " + heap[i].getShortestDistance() + ", ");
-        }
-        System.out.println("");
     }
 }

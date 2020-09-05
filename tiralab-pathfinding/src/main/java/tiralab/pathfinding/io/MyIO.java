@@ -9,6 +9,11 @@ import javax.imageio.ImageIO;
  */
 public class MyIO {
     
+    /**
+     * Reads a .png file and turns it into a 2d array of pixel RGB values.
+     * @param filepath path pointing to the file to be read
+     * @return 2d array of pixel RGB values
+     */
     public static int[][] readFromFile(String filepath) {
         BufferedImage image = null;
         File inputFile = null;
@@ -26,6 +31,12 @@ public class MyIO {
         return pixelArray;
     }
     
+    /**
+     * Writes a 2d array of pixel RGB values into an image file.
+     * @param pixelArray 2d array of pixels
+     * @param extension file extension
+     * @param filename name of file to be written to
+     */
     public static void writeToFile(int[][] pixelArray, String extension, String filename) {
         int width = pixelArray.length;
         int height = pixelArray[0].length;
@@ -44,6 +55,11 @@ public class MyIO {
         }
     }
     
+    /**
+     * Reads a .png file and turns it into BufferedImage.
+     * @param filepath path pointing to file to be read
+     * @return BufferedImage object based on the file
+     */
     public static BufferedImage getBufferedImageFromFilepath(String filepath) {
         BufferedImage image = null;
         File inputFile = null;
@@ -59,6 +75,11 @@ public class MyIO {
         return image;
     }
     
+    /**
+     * Creates a BufferedImage object based on a 2d array of pixel RGB values.
+     * @param pixelArray 2d pixel array to be turned into a BufferedImage
+     * @return BufferedImage object based on the 2d array
+     */
     public static BufferedImage getBufferedImageFromPixels(int[][] pixelArray) {
         int width = pixelArray.length;
         int height = pixelArray[0].length;

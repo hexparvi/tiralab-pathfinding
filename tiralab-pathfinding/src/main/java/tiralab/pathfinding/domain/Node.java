@@ -1,7 +1,5 @@
 package tiralab.pathfinding.domain;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -14,7 +12,6 @@ public class Node implements Comparable<Node> {
     private int y;
     private double shortestDistance = Double.MAX_VALUE / 2;
     private Node previousNode = null;
-    private Map<Node, Double> adjacentNodes = new HashMap<>();
     private boolean obstacle;
     
     public Node(String name) {
@@ -28,10 +25,6 @@ public class Node implements Comparable<Node> {
         this.obstacle = isObstacle;
     }
     
-    public void addDestination(Node destination, double distance) {
-        adjacentNodes.put(destination, distance);
-    }
-
     public double getShortestDistance() {
         return shortestDistance;
     }
@@ -42,15 +35,6 @@ public class Node implements Comparable<Node> {
         }
         
         this.shortestDistance = shortestDistance;
-    }
-    
-    //TODO: validate for negative edge weights
-    public Map<Node, Double> getAdjacentNodes() {
-        return adjacentNodes;
-    }
-
-    public void setAdjacentNodes(Map<Node, Double> adjacentNodes) {
-        this.adjacentNodes = adjacentNodes;
     }
 
     public Node getPreviousNode() {
@@ -93,7 +77,6 @@ public class Node implements Comparable<Node> {
         this.obstacle = obstacle;
     }
     
-    //TODO: proper double comparison
     @Override
     public int compareTo(Node o) {
         if (this.getShortestDistance () < o.getShortestDistance()) {
@@ -103,7 +86,6 @@ public class Node implements Comparable<Node> {
         }
         
         return 0;
-        //return this.getShortestDistance() - o.getShortestDistance();
     }
     
     @Override

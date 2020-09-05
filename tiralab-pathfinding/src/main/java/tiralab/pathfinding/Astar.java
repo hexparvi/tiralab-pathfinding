@@ -1,6 +1,5 @@
 package tiralab.pathfinding;
 
-import java.util.List;
 import tiralab.pathfinding.domain.Maze;
 import tiralab.pathfinding.domain.Node;
 import tiralab.pathfinding.util.MinHeap;
@@ -16,6 +15,10 @@ public class Astar implements Pathfinder {
     private Heuristic heuristic;
     private NodeStack foundPath;
     
+    /**
+     * A* implementation.
+     * @param heuristic heuristic used in distance estimation
+     */
     public Astar(Heuristic heuristic) {
         this.heuristic = heuristic;
     }
@@ -71,17 +74,18 @@ public class Astar implements Pathfinder {
     }
     
     private void checkNeighbors(Maze maze, Node parent, Node target) {
-        List<Node> neighbors = maze.findNeighborsOfNode(parent);
+        NodeStack neighbors = maze.findNeighborsOfNode(parent);
         
-        for (Node neighbor : neighbors) {
+        while (neighbors.size() > 0) {
+            Node neighbor = neighbors.pop();
+            
             if (this.visitedNodes[neighbor.getX()][neighbor.getY()] == true) {
                 continue;
             }
             
             double currentDistance = parent.getShortestDistance() 
-                    + maze.distanceBetweenNodes(parent, neighbor) + heuristic.estimateCost(neighbor, target);
-//            double currentDistance = parent.getShortestDistance() 
-//                    + 0.1 + heuristic.estimateCost(neighbor, target);
+                    + maze.distanceBetweenNodes(parent, neighbor) 
+                    + heuristic.estimateCost(neighbor, target);
             
             if (!neighbor.isObstacle() && currentDistance < neighbor.getShortestDistance()) {
                 neighbor.setShortestDistance(currentDistance);
@@ -91,20 +95,15 @@ public class Astar implements Pathfinder {
         }
     }
     
-    //move this functionality to Node class?
-    private double distanceToNode(Node node) {
-        if (node.isObstacle()) return Double.MAX_VALUE / 2;
-        else return 0.1;
-    }
-    
     private double distanceBetweenNodes(Node from, Node to) {
         double dx = from.getX() - to.getX();
         double dy = from.getY() - to.getY();
         
         if (to.isObstacle()) { 
             return Double.MAX_VALUE / 2;
+        } else {
+            return Math.sqrt((dx * dx) + (dy * dy));
         }
-        else return Math.sqrt((dx * dx) + (dy * dy));
     }
 
     public Heuristic getHeuristic() {

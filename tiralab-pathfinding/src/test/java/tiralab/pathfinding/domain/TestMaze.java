@@ -3,13 +3,12 @@ package tiralab.pathfinding.domain;
 import java.awt.Color;
 import java.util.List;
 import org.junit.Test;
+import tiralab.pathfinding.util.NodeStack;
 
 /**
  *
  */
 public class TestMaze {
-    //TO TEST:
-    //
     
     private Maze generateTestMaze() {
         int width = 2;
@@ -42,6 +41,6 @@ public class TestMaze {
     public void findNeighborsTest() {
         Maze maze = generateTestMaze();
         Node[][] nodes = maze.getNodeArray();
-        List<Node> neighbors = maze.findNeighborsOfNode(nodes[0][0]);
+        NodeStack neighbors = maze.findNeighborsOfNode(nodes[0][0]);
     }
 }

@@ -1,10 +1,9 @@
 package tiralab.pathfinding.domain;
 
-import java.util.ArrayList;
-import java.util.List;
+import tiralab.pathfinding.util.NodeStack;
 
 /**
- * Represents a maze image as a graph of nodes
+ * Represents a maze image as a graph of nodes.
  */
 public class Maze {
     private Node[][] nodeArray;
@@ -65,13 +64,13 @@ public class Maze {
      * @param node
      * @return List of Nodes accessible from the supplied Node
      */
-    public List<Node> findNeighborsOfNode(Node node) {
-        List<Node> neighbors = new ArrayList<>();
+    public NodeStack findNeighborsOfNode(Node node) {
+        NodeStack neighbors = new NodeStack(10);
         
         for (int x = node.getX() - 1; x <= node.getX() + 1; x++) {
             for (int y = node.getY() - 1; y <= node.getY() + 1; y++) {
                 if (pointIsWithinMazeBounds(x, y) && !(x == node.getX() && y == node.getY())) {
-                    neighbors.add(nodeArray[x][y]);
+                    neighbors.push(nodeArray[x][y]);
                 }
             }
         }
@@ -79,6 +78,12 @@ public class Maze {
         return neighbors;
     }
     
+    /**
+     * Checks the direction of movement between two nodes.
+     * @param from parent node
+     * @param to child node
+     * @return change in vertical and horizontal position in [dx, dy] format
+     */
     public int[] direction(Node from, Node to) {
         int dx = to.getX() - from.getX();
         int dy = to.getY() - from.getY();
@@ -95,6 +100,12 @@ public class Maze {
         return direction;
     }
     
+    /**
+     * Checks the distance between two nodes.
+     * @param from parent node
+     * @param to child node
+     * @return euclidean distance between nodes, or very large number if child node is an obstacle
+     */
     public double distanceBetweenNodes(Node from, Node to) {
         double dx = from.getX() - to.getX();
         double dy = from.getY() - to.getY();
@@ -102,7 +113,9 @@ public class Maze {
         if (to.isObstacle()) { 
             return Double.MAX_VALUE / 2;
         }
-        else return Math.sqrt((dx * dx) + (dy * dy));
+        else {
+            return Math.sqrt((dx * dx) + (dy * dy));
+        }
     }
     
     private boolean pointIsWithinMazeBounds(int x, int y) {

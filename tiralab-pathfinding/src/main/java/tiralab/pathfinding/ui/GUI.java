@@ -181,88 +181,87 @@ public class GUI extends JFrame {
     
     class RunListener implements ActionListener {
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        Maze map;
-        Node start = new Node("");
-        Node end = new Node("");
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Maze map;
+            Node start = new Node("");
+            Node end = new Node("");
         
-        if (jps.isSelected()) {
-            pathfinder = new JPS();
+            if (jps.isSelected()) {
+                pathfinder = new JPS();
             
-        } else if (astar.isSelected()) {
-            pathfinder = new Astar(new Heuristic("euclidean"));
+            } else if (astar.isSelected()) {
+                pathfinder = new Astar(new Heuristic("euclidean"));
             
-        } else {
-            pathfinder = new Astar(new Heuristic(""));
+            } else {
+                pathfinder = new Astar(new Heuristic(""));
+            }
+        
+            if (maze.isSelected()) {
+                int[][] pixelArray = MyIO.readFromFile("src/mazes/maze1.png");
+                map = new Maze(pixelArray, pixelArray.length, pixelArray[0].length);
+                map.generateNodes();
+            
+            } else {
+                int[][] pixelArray = MyIO.readFromFile("src/mazes/cave1.png");
+                map = new Maze(pixelArray, pixelArray.length, pixelArray[0].length);
+                map.generateNodes();
+            }
+        
+            if (!startXCoord.getText().equals("") && !endXCoord.getText().equals("") &&
+                    !startYCoord.getText().equals("") && !endYCoord.getText().equals("")) {
+                start = map.getNodeAtPosition(Integer.parseInt(startXCoord.getText()),
+                        Integer.parseInt(startYCoord.getText()));
+                end = map.getNodeAtPosition(Integer.parseInt(endXCoord.getText()),
+                        Integer.parseInt(endYCoord.getText()));
+            }
+        
+            if (normalRun.isSelected()) {
+                runAlgo(map, start, end);
+            
+            } else if (testRun.isSelected()) {
+                runTests(map, start, end);
+            }
         }
+    
+        private void runAlgo(Maze map, Node start, Node end) {
+            long startTime = System.nanoTime();
+            pathfinder.run(map, start, end);
+            long endTime = System.nanoTime();
+            long runTime = (endTime - startTime) / 1000000 ;
         
-        if (maze.isSelected()) {
-            int[][] pixelArray = MyIO.readFromFile("src/mazes/maze1.png");
-            map = new Maze(pixelArray, pixelArray.length, pixelArray[0].length);
-            map.generateNodes();
-            
-        } else {
-            int[][] pixelArray = MyIO.readFromFile("src/mazes/cave1.png");
-            map = new Maze(pixelArray, pixelArray.length, pixelArray[0].length);
-            map.generateNodes();
+            timeLabel.setText("Time spent: " + runTime + " ms");
+            nodeLabel.setText("Nodes visited: " + pathfinder.getNumberOfNodesVisited());
+            pathLabel.setText("Path length: " + pathfinder.getPathLength());
+        
+            int[][] newMap = drawPath(map, pathfinder.getPath());
+            BufferedImage newMapImg = MyIO.getBufferedImageFromPixels(newMap);
+            mapImg.setIcon(new ImageIcon(newMapImg));
         }
+    
+        private void runTests(Maze map, Node start, Node end) {
+            int testRuns = (int) times.getSelectedItem();
         
-        //set start & end nodes
-        if (!startXCoord.getText().equals("") && !endXCoord.getText().equals("") &&
-                !startYCoord.getText().equals("") && !endYCoord.getText().equals("")) {
-            start = map.getNodeAtPosition(Integer.parseInt(startXCoord.getText()),
-                    Integer.parseInt(startYCoord.getText()));
-            end = map.getNodeAtPosition(Integer.parseInt(endXCoord.getText()),
-                    Integer.parseInt(endYCoord.getText()));
+            long[] results = Test.runTests(testRuns, map, start, end);
+        
+            timeLabel.setText("Time spent: Dijkstra " + results[0] + " ms, A* " 
+                    + results[1] + " ms, JPS " + results[2] + " ms.");
+            nodeLabel.setText("Nodes visited: N/A");
+            pathLabel.setText("Path length: N/A");
         }
+    
+        private int[][] drawPath(Maze maze, NodeStack path) {
+            int[][] pixelArray = maze.getPixels();
         
-        if (normalRun.isSelected()) {
-            runAlgo(map, start, end);
-            
-        } else if (testRun.isSelected()) {
-            runTests(map, start, end);
+            while (path.size() > 0) {
+                Node node = path.pop();
+                pixelArray[node.getX()][node.getY()] = Color.RED.getRGB();
+            }
+        
+            return pixelArray;
         }
     }
     
-    private void runAlgo(Maze map, Node start, Node end) {
-         long startTime = System.nanoTime();
-        pathfinder.run(map, start, end);
-        long endTime = System.nanoTime();
-        long runTime = (endTime - startTime) / 1000000 ;
-        
-        timeLabel.setText("Time spent: " + runTime + " ms");
-        nodeLabel.setText("Nodes visited: " + pathfinder.getNumberOfNodesVisited());
-        pathLabel.setText("Path length: " + pathfinder.getPathLength());
-        
-        int[][] newMap = drawPath(map, pathfinder.getPath());
-        BufferedImage newMapImg = MyIO.getBufferedImageFromPixels(newMap);
-        mapImg.setIcon(new ImageIcon(newMapImg));
-    }
-    
-    private void runTests(Maze map, Node start, Node end) {
-        int testRuns = (int) times.getSelectedItem();
-        
-        long[] results = Test.runTests(testRuns, map, start, end);
-        
-        timeLabel.setText("Time spent: Dijkstra " + results[0] + " ms, A* " 
-                + results[1] + " ms, JPS " + results[2] + " ms.");
-        nodeLabel.setText("Nodes visited: N/A");
-        pathLabel.setText("Path length: N/A");
-    }
-    
-    private int[][] drawPath(Maze maze, NodeStack path) {
-        int[][] pixelArray = maze.getPixels();
-        
-        while (path.size() > 0) {
-            Node node = path.pop();
-            pixelArray[node.getX()][node.getY()] = Color.RED.getRGB();
-        }
-        
-        return pixelArray;
-    }
-    
-}
     class CoordinateListener extends MouseAdapter {
 
         @Override
