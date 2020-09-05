@@ -1,7 +1,9 @@
 # tiralab-pathfinding
 
 [Käyttöohje](https://github.com/hexparvi/tiralab-pathfinding/blob/master/tiralab-pathfinding/documentation/howto.md)
+
 [Toteutus](https://github.com/hexparvi/tiralab-pathfinding/blob/master/tiralab-pathfinding/documentation/implementation.md)
+
 [Testaus](https://github.com/hexparvi/tiralab-pathfinding/blob/master/tiralab-pathfinding/documentation/testing.md)
 
 ## Week reports
