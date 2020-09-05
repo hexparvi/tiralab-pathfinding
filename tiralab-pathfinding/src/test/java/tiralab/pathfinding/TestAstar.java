@@ -10,8 +10,6 @@ import tiralab.pathfinding.io.MyIO;
  *
  */
 public class TestAstar {
-    //TO TEST:
-    // test using different heuristics
     
     private Maze generateTestMaze() {
         int[][] pixelArray = MyIO.readFromFile("src/testmazes/minimaze.png");
@@ -20,17 +18,29 @@ public class TestAstar {
         return maze;
     }
     
-    //multiple possible shortest routes
-//    @Test
-//    public void dijkstraTest() {
-//        Maze maze = generateTestMaze();
-//        Node[][] nodeArray = maze.getNodeArray();
-//        Heuristic heuristic = new Heuristic("");
-//        Astar dijkstra = new Astar(heuristic);
-//        
-//        dijkstra.run(maze, nodeArray[1][1], nodeArray[8][8]);
-//        
-//        assertEquals("Shortest route to node is incorrect", 
-//                nodeArray[4][9].getPreviousNode(), nodeArray[5][8]);
-//    }
+    @Test
+    public void dijkstraTest() {
+        Maze maze = generateTestMaze();
+        Node start = maze.getNodeAtPosition(0, 1);
+        Node end = maze.getNodeAtPosition(7, 9);
+        
+        Astar dijkstra = new Astar(new Heuristic(""));
+        
+        dijkstra.run(maze, start, end);
+        
+        assertEquals("Path length is incorrect", dijkstra.getPathLength(), 16);
+    }
+    
+    @Test
+    public void astarTest() {
+        Maze maze = generateTestMaze();
+        Node start = maze.getNodeAtPosition(0, 1);
+        Node end = maze.getNodeAtPosition(7, 9);
+        
+        Astar astar = new Astar(new Heuristic("euclidean"));
+        
+        astar.run(maze, start, end);
+        
+        assertEquals("Path length is incorrect", astar.getPathLength(), 16);
+    }
 }

@@ -17,7 +17,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import tiralab.pathfinding.Astar;
@@ -86,7 +85,6 @@ public class GUI extends JFrame {
         bottomPanel.setLayout(bottomLayout);
         
         topPanel.add(mapPanel);
-        //topPanel.add(resultsPanel);
         
         FlowLayout topLayout = new FlowLayout();
         topPanel.setLayout(topLayout);
@@ -245,7 +243,7 @@ public class GUI extends JFrame {
     private void runTests(Maze map, Node start, Node end) {
         int testRuns = (int) times.getSelectedItem();
         
-        long[] results = Test.runTests2(testRuns, map, start, end);
+        long[] results = Test.runTests(testRuns, map, start, end);
         
         timeLabel.setText("Time spent: Dijkstra " + results[0] + " ms, A* " 
                 + results[1] + " ms, JPS " + results[2] + " ms.");
