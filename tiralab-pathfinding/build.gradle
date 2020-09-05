@@ -13,6 +13,12 @@ repositories {
     jcenter()
 }
 
+jar {
+    manifest {
+        attributes 'Main-Class': 'tiralab.pathfinding.Main'
+    }
+}
+
 dependencies {
     testImplementation     'junit:junit:4.13'
 }
