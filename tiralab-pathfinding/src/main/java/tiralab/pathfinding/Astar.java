@@ -79,7 +79,7 @@ public class Astar implements Pathfinder {
             }
             
             double currentDistance = parent.getShortestDistance() 
-                    + distanceToNode(neighbor) + heuristic.estimateCost(neighbor, target);
+                    + maze.distanceBetweenNodes(parent, neighbor) + heuristic.estimateCost(neighbor, target);
 //            double currentDistance = parent.getShortestDistance() 
 //                    + 0.1 + heuristic.estimateCost(neighbor, target);
             
@@ -95,6 +95,16 @@ public class Astar implements Pathfinder {
     private double distanceToNode(Node node) {
         if (node.isObstacle()) return Double.MAX_VALUE / 2;
         else return 0.1;
+    }
+    
+    private double distanceBetweenNodes(Node from, Node to) {
+        double dx = from.getX() - to.getX();
+        double dy = from.getY() - to.getY();
+        
+        if (to.isObstacle()) { 
+            return Double.MAX_VALUE / 2;
+        }
+        else return Math.sqrt((dx * dx) + (dy * dy));
     }
 
     public Heuristic getHeuristic() {

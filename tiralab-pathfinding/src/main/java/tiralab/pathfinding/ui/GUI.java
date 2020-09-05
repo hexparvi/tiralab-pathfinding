@@ -255,26 +255,10 @@ public class GUI extends JFrame {
     
     private int[][] drawPath(Maze maze, NodeStack path) {
         int[][] pixelArray = maze.getPixels();
-        Node previousNode = null;
         
         while (path.size() > 0) {
             Node node = path.pop();
-            
-            if (previousNode != null) {
-                int[] direction = maze.direction(previousNode, node);
-                int x = previousNode.getX();
-                int y = previousNode.getY();
-                int dx = direction[0];
-                int dy = direction[1];
-                
-                while (x != node.getX() || y != node.getY()) {
-                    pixelArray[x][y] = Color.RED.getRGB();
-                    x = x + dx;
-                    y = y + dy;
-                }
-            }
-            
-            previousNode = node;
+            pixelArray[node.getX()][node.getY()] = Color.RED.getRGB();
         }
         
         return pixelArray;

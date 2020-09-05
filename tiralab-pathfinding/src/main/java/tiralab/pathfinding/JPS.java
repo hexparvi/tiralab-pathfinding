@@ -60,8 +60,11 @@ public class JPS implements Pathfinder {
                 continue;
             }
             
+//            double currentDistance = parent.getShortestDistance() 
+//                   + distanceToNode(successor) + heuristic.estimateCost(parent, successor);
+            
             double currentDistance = parent.getShortestDistance() 
-                   + distanceToNode(successor) + heuristic.estimateCost(parent, successor);
+                   + currentMaze.distanceBetweenNodes(parent, successor) + heuristic.estimateCost(parent, successor);
             
             if (currentDistance <= successor.getShortestDistance()) {
                 successor.setShortestDistance(currentDistance);
@@ -245,20 +248,22 @@ public class JPS implements Pathfinder {
         Node currentNode = end;
         
         while (!currentNode.equals(start)) {
-//            int[] direction = currentMaze.direction(currentNode, currentNode.getPreviousNode());
-//            int previousX = currentNode.getPreviousNode().getX();
-//            int previousY = currentNode.getPreviousNode().getY();
-//            int dx = direction[0];
-//            int dy = direction[1];
-//            int x = currentNode.getX();
-//            int y = currentNode.getY();
-//            
-//            while (x != previousX && y != previousY) {
-//                foundPath.push(currentMaze.getNodeAtPosition(x, y));
-//                
-//                x = x + dx;
-//                y = y + dy;
-//            }
+            int[] direction = currentMaze.direction(currentNode, currentNode.getPreviousNode());
+            int previousX = currentNode.getPreviousNode().getX();
+            int previousY = currentNode.getPreviousNode().getY();
+            int dx = direction[0];
+            int dy = direction[1];
+            int x = currentNode.getX();
+            int y = currentNode.getY();
+            
+            while (x != previousX || y != previousY) {
+                if (!foundPath.peek().equals(currentMaze.getNodeAtPosition(x, y))) {
+                    foundPath.push(currentMaze.getNodeAtPosition(x, y));
+                }
+                
+                x = x + dx;
+                y = y + dy;
+            }
             
             foundPath.push(currentNode.getPreviousNode());
             currentNode = currentNode.getPreviousNode();
@@ -269,6 +274,16 @@ public class JPS implements Pathfinder {
     private double distanceToNode(Node node) {
         if (node.isObstacle()) return Double.MAX_VALUE / 2;
         else return 0.0;
+    }
+    
+    private double distanceBetweenNodes(Node from, Node to) {
+        double dx = from.getX() - to.getX();
+        double dy = from.getY() - to.getY();
+        
+        if (to.isObstacle()) { 
+            return Double.MAX_VALUE / 2;
+        }
+        else return Math.sqrt((dx * dx) + (dy * dy));
     }
     
     /**

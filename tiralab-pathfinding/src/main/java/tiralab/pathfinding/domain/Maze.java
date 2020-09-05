@@ -95,6 +95,16 @@ public class Maze {
         return direction;
     }
     
+    public double distanceBetweenNodes(Node from, Node to) {
+        double dx = from.getX() - to.getX();
+        double dy = from.getY() - to.getY();
+        
+        if (to.isObstacle()) { 
+            return Double.MAX_VALUE / 2;
+        }
+        else return Math.sqrt((dx * dx) + (dy * dy));
+    }
+    
     private boolean pointIsWithinMazeBounds(int x, int y) {
         return ((x >= 0 && x < width) && (y >= 0 && y < height));
     }
