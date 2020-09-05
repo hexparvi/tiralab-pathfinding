@@ -46,8 +46,17 @@
 
 **MyIO:** muokkaa .png-muotoiset kartat kaksiulotteiseksi pikseliarrayksi ja päinvastoin
 
+---
+
+### Puutteet
+
+Yleisen hiomisen lisäksi työhön olisi voinut vielä toteuttaa tavan syöttää tehokkuustesteille etsittävien polkujen alku- ja loppusolmuja vaikkapa tekstitiedostosta. Nykyisellään solmujen syöttäminen käsin hankaloittaa testaamista. Vertailun monipuolistamisen avuksi olisi voinut myös toteuttaa kartan vapaan valitsemisen. Algoritmien toteutuksessa itseäni jäi vaivaamaan eniten JPS:n naapurien karsiminen; nykyinen pruneNeighbors-metodi on aikamoinen hirviö. En oikein uskaltanut koskea metodiin enää jälkeenpäin, kun koko algoritmin ylipäätään toimivaksi saattaminen aiheutti jo itsessään niin paljon päänvaivaa.
+
+---
+
 ### Lähteet
 * https://en.wikipedia.org/wiki/A*_search_algorithm
 * https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
 * D. Harabor and A. Grastien. Online Graph Pruning for Pathfinding on Grid Maps. In National Conference on Artificial Intelligence (AAAI), 2011.
 * https://harablog.wordpress.com/2011/09/07/jump-point-search/
+* https://en.wikipedia.org/wiki/Euclidean_distance
